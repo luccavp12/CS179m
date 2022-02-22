@@ -1,0 +1,35 @@
+<!doctype html>
+<head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/home.css') }}">
+</head>
+<title>CS179m Project</title>
+<h1>CS179m Project Home Page</h1>
+
+<a href="{{ url_for('operations') }}">operations</a>
+
+<body>
+    <div class="container">
+        <a href="">
+            <div id="uploadManifestButton">
+                <p>Upload Manifest</p>
+            </div>
+        </a>
+    
+        <div id="optionsContainer">
+            <a href="">
+                <div id="balanceShipButton">
+                    <p class="buttonText">Balance Ship</p>
+                </div>
+            </a>
+
+            <a href="">
+                <div id="loadUnloadShipButton">
+                    <p class="buttonText">Load/Unload Ship</p>
+                </div>
+            </a>
+        </div>
+    
+    </div>
+</body>
+
+

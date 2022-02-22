@@ -1,0 +1,66 @@
+body {
+    background-color: rgb(151, 151, 151);
+}
+
+.container {
+    display: flex;
+    height: 500px;
+    flex-direction: column;
+    /* background-color: blue; */
+    justify-content: center;
+    /* width: 100%; */
+    font-size: 50px;
+}
+
+#uploadManifestButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 200px;
+    width: 550px;
+    margin: auto;
+    text-align: center;
+}
+
+#optionsContainer {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    width: 1600px;
+    margin: auto;
+    /* background-color: violet; */
+}
+
+#balanceShipButton {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    width: 550px;
+    background-color: white;
+    margin: auto;
+    text-align: center;
+}
+
+#loadUnloadShipButton {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    width: 550px;
+    background-color: white;
+    margin: auto;
+    text-align: center;
+}
+
+.buttonText {
+    margin: auto;
+}
+
+a {
+    background-color: white;
+    /* height: 100px; */
+    width: 550px;
+    margin: auto;
+    text-align: center;
+}
+

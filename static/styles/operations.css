@@ -1,0 +1,27 @@
+body {
+    background-color: rgb(151, 151, 151);
+}
+
+#gridContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rowContainer {
+    display: flex;
+}
+
+.row {
+    background-color: aqua;
+    width: 100px;
+    margin: 10px;
+    /* float: right; */
+}
+
+.containerButton {
+    background-color: white;
+    /* float: right; */
+}
+

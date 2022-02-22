@@ -7,7 +7,12 @@ import json
 app = Flask(__name__)
 
 @app.route("/")
-def content():
+def home():
+    return render_template('home.html')
+    
+
+@app.route("/operations")
+def operations():
     with open('Manifests/ShipCase5.txt', mode = 'r', encoding= 'utf-8-sig') as f:
         lines = f.readlines() # list containing lines of file
         columns = ['position', 'weight', 'description']
@@ -22,12 +27,5 @@ def content():
                 for index, elem in enumerate(data):
                     d[columns[index]] = data[index]
             infoList.append(d)
-    return render_template('hello.html', text = infoList)
+    return render_template('operations.html', text = infoList)
 
-@app.route("/operations")
-def content():
-    return render_template('operations.html')
-
-
-# def hello_world(name=None):
-#     return render_template('hello.html', name=name)
