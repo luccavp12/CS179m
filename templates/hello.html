@@ -1,11 +1,11 @@
 <!doctype html>
-<title>Hello from Flask</title>
-{% if name %}
-  <h1>Hello {{ name }}!</h1>
-{% else %}
-  <h1>Hello, World!</h1>
-{% endif %}
+<title>CS179m Project</title>
+<h1>CS179m Project</h1>
 
 <pre>
-{{ text }}
+{%for i in text%}
+    {{i.position}}<br>
+    {{i.weight}}<br>
+    {{i.description}}<br>
+{%endfor%}
 </pre>
