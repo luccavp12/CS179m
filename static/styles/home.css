@@ -6,10 +6,15 @@ body {
     display: flex;
     height: 500px;
     flex-direction: column;
-    /* background-color: blue; */
     justify-content: center;
-    /* width: 100%; */
     font-size: 50px;
+}
+
+a {
+    background-color: white;
+    width: 550px;
+    margin: auto;
+    text-align: center;
 }
 
 #uploadManifestButton {
@@ -29,7 +34,6 @@ body {
     height: 200px;
     width: 1600px;
     margin: auto;
-    /* background-color: violet; */
 }
 
 #balanceShipButton {
@@ -55,12 +59,3 @@ body {
 .buttonText {
     margin: auto;
 }
-
-a {
-    background-color: white;
-    /* height: 100px; */
-    width: 550px;
-    margin: auto;
-    text-align: center;
-}
-
