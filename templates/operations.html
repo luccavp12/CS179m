@@ -9,100 +9,112 @@
 <a href="{{ url_for('home') }}">home</a>
 </pre>
 
-<div id="gridContainer">
-    <div class="rowContainer">
-        {% for i in text[84:96] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
+<body>
+    <div id="gridContainer">
+        <div class="rowContainer">
+            {% for i in text[84:96] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[72:84] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[60:72] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[48:60] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[36:48] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[24:36] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[12:24] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="rowContainer">
+            {% for i in text[0:12] %}
+                <div class="row">
+                    <div class="containerButton" id="{{ i.position }}">
+                        {{i.position}}
+                        {{i.weight}}
+                        {{i.description}}
+                    </div>    
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
-    <div class="rowContainer">
-        {% for i in text[72:84] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
+    <div id="footerContainer">
+        <div id="finishButtonContainer">
+            <a href="">
+                <div id="finishButton">
+                    <p>Finish</p>
+                </div>
+            </a>
+        </div>
     </div>
-
-    <div class="rowContainer">
-        {% for i in text[60:72] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="rowContainer">
-        {% for i in text[48:60] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="rowContainer">
-        {% for i in text[36:48] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="rowContainer">
-        {% for i in text[24:36] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="rowContainer">
-        {% for i in text[12:24] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="rowContainer">
-        {% for i in text[0:12] %}
-            <div class="row">
-                <div class="containerButton">
-                    {{i.position}}
-                    {{i.weight}}
-                    {{i.description}}
-                </div>    
-            </div>
-        {% endfor %}
-    </div>
-</div>
+</body>

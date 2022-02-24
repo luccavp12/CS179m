@@ -25,3 +25,26 @@ body {
     /* float: right; */
 }
 
+#footerContainer {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    margin-top: 20px;
+    /* background-color: lightgreen; */
+}
+
+#finishButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    width: 1420px;
+}
+
+#finishButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 100px;
+    width: 300px;
+    font-size: 30px;
+}
