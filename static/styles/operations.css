@@ -48,3 +48,15 @@ body {
     width: 300px;
     font-size: 30px;
 }
+
+.positionDisplay {
+    margin: 0px;
+}
+
+.weightDisplay {
+    margin: 0px;
+}
+
+.descriptionDisplay {
+    margin: 0px;
+}

@@ -1,6 +1,8 @@
 <!doctype html>
 <head>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/operations.css') }}">
+    <script src="{{ url_for('static', filename='JS/operations.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <title>CS179M Project</title>
 <h1>Operations</h1>
@@ -15,9 +17,15 @@
             {% for i in text[84:96] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -27,9 +35,15 @@
             {% for i in text[72:84] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -39,9 +53,15 @@
             {% for i in text[60:72] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -51,9 +71,15 @@
             {% for i in text[48:60] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -63,9 +89,15 @@
             {% for i in text[36:48] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -75,9 +107,15 @@
             {% for i in text[24:36] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -87,9 +125,15 @@
             {% for i in text[12:24] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}
@@ -99,9 +143,15 @@
             {% for i in text[0:12] %}
                 <div class="row">
                     <div class="containerButton" id="{{ i.position }}">
-                        {{i.position}}
-                        {{i.weight}}
-                        {{i.description}}
+                        <p class="positionDisplay">
+                            {{i.position}}
+                        </p>
+                        <p class="weightDisplay">
+                            {{i.weight}}
+                        </p>
+                        <p class="descriptionDisplay">
+                            {{i.description}}
+                        </p>
                     </div>    
                 </div>
             {% endfor %}

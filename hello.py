@@ -41,9 +41,9 @@ def home():
 
 @app.route("/operations")
 def operations():
-    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    print(manifestPath)
-    # manifestPath = "Manifests/ShipCase5.txt"                     
+    # manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    # print(manifestPath)
+    manifestPath = "Manifests/ShipCase5.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
