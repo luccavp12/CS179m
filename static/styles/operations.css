@@ -48,3 +48,23 @@ body {
     width: 300px;
     font-size: 30px;
 }
+
+#loadingButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 100px;
+    width: 300px;
+    font-size: 30px;
+}
+
+#unloadingButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 100px;
+    width: 300px;
+    font-size: 30px;
+}
