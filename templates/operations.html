@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/operations.css') }}">
-    <script src="{{ url_for('static', filename='JS/operations.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='JS/operations.js') }}"></script> -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <title>CS179M Project</title>
@@ -13,35 +13,29 @@
 
 <body>
 
-    <div id="footerContainer">
-        <div id="finishButtonContainer">
-            <a href="">
+    <div id="headerContainer">
+        <div id="modeButtonContainer">
+            <!-- <a href=""> -->
                 <div id="loadingButton">
                     <p>Loading</p>
                 </div>
-            </a>
-            <a href="">
+            <!-- </a> -->
+            <!-- <a href=""> -->
                 <div id="unloadingButton">
                     <p>Unloading</p>
                 </div>
-            </a>
+            <!-- </a> -->
         </div>
     </div>
 
     <div id="gridContainer">
         <div class="rowContainer">
             {% for i in text[84:96] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -49,17 +43,11 @@
 
         <div class="rowContainer">
             {% for i in text[72:84] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -67,35 +55,23 @@
 
         <div class="rowContainer">
             {% for i in text[60:72] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
-                    </div>    
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
+                    </div>
                 </div>
             {% endfor %}
         </div>
 
         <div class="rowContainer">
             {% for i in text[48:60] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -103,17 +79,11 @@
 
         <div class="rowContainer">
             {% for i in text[36:48] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -121,17 +91,11 @@
 
         <div class="rowContainer">
             {% for i in text[24:36] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -139,17 +103,11 @@
 
         <div class="rowContainer">
             {% for i in text[12:24] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -157,17 +115,11 @@
 
         <div class="rowContainer">
             {% for i in text[0:12] %}
-                <div class="row">
+                <div class="containerButtonContainer">
                     <div class="containerButton" id="{{ i.position }}">
-                        <p class="positionDisplay">
-                            {{i.position}}
-                        </p>
-                        <p class="weightDisplay">
-                            {{i.weight}}
-                        </p>
-                        <p class="descriptionDisplay">
-                            {{i.description}}
-                        </p>
+                        <p class="positionDisplay">{{i.position}}</p>
+                        <p class="weightDisplay">{{i.weight}}</p>
+                        <p class="descriptionDisplay">{{i.description}}</p>
                     </div>    
                 </div>
             {% endfor %}
@@ -184,3 +136,6 @@
         </div>
     </div>
 </body>
+
+
+<script src="{{ url_for('static', filename='JS/operations.js') }}"></script>

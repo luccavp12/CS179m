@@ -2,6 +2,42 @@ body {
     background-color: rgb(151, 151, 151);
 }
 
+#headerContainer {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    margin-bottom: 20px;
+    /* background-color: lightgreen; */
+}
+
+#modeButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    width: 1420px;
+}
+
+#loadingButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 100px;
+    width: 300px;
+    font-size: 30px;
+}
+
+#unloadingButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 100px;
+    width: 300px;
+    font-size: 30px;
+    margin-left: 10px;
+}
+
+
 #gridContainer {
     display: flex;
     flex-direction: column;
@@ -13,7 +49,7 @@ body {
     display: flex;
 }
 
-.row {
+.containerButtonContainer {
     background-color: aqua;
     width: 100px;
     margin: 10px;
@@ -49,24 +85,6 @@ body {
     font-size: 30px;
 }
 
-#loadingButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    height: 100px;
-    width: 300px;
-    font-size: 30px;
-}
-
-#unloadingButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    height: 100px;
-    width: 300px;
-    font-size: 30px;
 .positionDisplay {
     margin: 0px;
 }
