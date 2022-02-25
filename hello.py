@@ -6,10 +6,10 @@ from flask import request
 from flask import redirect
 from flask import url_for
 from datetime import datetime
-from datetime import date #Does not import
+from datetime import date
 import re
 import json
-import easygui
+#import easygui
 
 app = Flask(__name__)
 
@@ -41,8 +41,8 @@ def home():
 
 @app.route("/operations")
 def operations():
-    # manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    # print(manifestPath)
+    #manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    #print(manifestPath)
     manifestPath = "Manifests/ShipCase5.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
