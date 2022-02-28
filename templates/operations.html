@@ -2,7 +2,9 @@
 <head>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/operations.css') }}">
     <!-- <script src="{{ url_for('static', filename='JS/operations.js') }}"></script> -->
+    <script src="https://unpkg.com/whatwg-fetch@2.0.4/fetch.js"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <script type="text/javascript"> var urlForAlgo = "{{ url_for('algorithm') }}"; </script>
 </head>
 <title>CS179M Project</title>
 <h1>Operations</h1>
@@ -15,16 +17,12 @@
 
     <div id="headerContainer">
         <div id="modeButtonContainer">
-            <!-- <a href=""> -->
-                <div id="loadingButton">
-                    <p>Loading</p>
-                </div>
-            <!-- </a> -->
-            <!-- <a href=""> -->
-                <div id="unloadingButton">
-                    <p>Unloading</p>
-                </div>
-            <!-- </a> -->
+            <div id="loadingButton">
+                <p>Loading</p>
+            </div>
+            <div id="unloadingButton">
+                <p>Unloading</p>
+            </div>
         </div>
     </div>
 
@@ -128,14 +126,14 @@
 
     <div id="footerContainer">
         <div id="finishButtonContainer">
-            <a href="">
-                <div id="finishButton">
+            <form id="finishSubmissionForm">
+                <!-- <div id="finishButton">
                     <p>Finish</p>
-                </div>
-            </a>
+                </div> -->
+                <input type="submit" value="Finish" id="finishButton">
+            </form>
         </div>
     </div>
 </body>
-
 
 <script src="{{ url_for('static', filename='JS/operations.js') }}"></script>

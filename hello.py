@@ -5,6 +5,8 @@ from flask import render_template
 from flask import request
 from flask import redirect
 from flask import url_for
+from flask import jsonify
+from flask import make_response
 from datetime import datetime
 from datetime import date
 import re
@@ -60,3 +62,12 @@ def operations():
             infoList.append(d)
     return render_template('operations.html', text = infoList)
 
+@app.route("/algorithm", methods=["POST"])
+def algorithm():
+    req = request.get_json()
+    print("Printing JSON of changes to be made")
+    print(req)
+
+    res = make_response(jsonify({"message": "OK"}), 200)
+
+    return res
