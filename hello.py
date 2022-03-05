@@ -68,6 +68,11 @@ def algorithm():
     print("Printing JSON of changes to be made")
     print(req)
 
-    res = make_response(jsonify({"message": "OK"}), 200)
+    res = make_response(jsonify({
+            "1": {"weight": 110, "name": "toys"},
+            "2": {"weight": 90, "name": "medicine"},
+            "3": {"weight": 300, "name": "car parts"}
+        }), 200)
+    # res = make_response(jsonify({"bruh":"hello"}   ), 200)
 
     return res

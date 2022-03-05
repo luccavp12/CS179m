@@ -214,6 +214,8 @@ function finishAndSubmit(ev) {
         }
         response.json().then(function(data) {
           console.log(data);
+          console.log("Hello there!");
+          checkIfLoad(data);
         });
       })
       .catch(function(error) {
@@ -221,9 +223,10 @@ function finishAndSubmit(ev) {
     });    
 }
 
-function checkIfLoad() {
+function checkIfLoad(data) {
     console.log("Inside checkIfLoad");
-
-    // var data = JSON.parse(this.responseText);
-    // console.log(data);
+    console.log(data);
+    for (var element in data) {
+        console.log(data[element]["name"]);
+    }
 }
