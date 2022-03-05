@@ -132,5 +132,37 @@ def getWeights(sampleJson): #This function will return 5 values, int right_weigh
     
     return right_weight, left_weight, maxWeight, max_Index, isBalanced, total
             
-            
+def isMoveable(y, x, sampleJson, flag):
+    if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
+        return False
+    return True
+
+# def isMoveable(y, x, sampleJson, flag): # This function will move a container if a container is moveable
+#     if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
+#         isMoveable(y+1, x, sampleJson)
+#         flag = 1
+#     if flag == 1: #IF FLAG = 1, then we are moving an object within the same side to a free space
+#        y_desired, x_desired = findNearestUnused(y,x, sampleJson)
+#        move (y, x, y_desired, x_desired, sampleJson, flag)
+#     if flag == 0:
+
+def findNearestUnused(y,x,sampleJson):
+    if x = 1:
+        return findFirstRightCol(y,x,sampleJson)
+    else:
+        return findFirstLeftCol(y,x,sampleJson)
+
+
+def findFirstRightCol(y, x, sampleJson):
+    # should return a y and x element
+    for i in range(x+1, 7):
+        for j in range(8):
+            if checkDesc(j+1, i) == "UNUSED":
+                return j+1, i
+        
+def findFirstLeftCol(y, x, sampleJson):
+    for i in range(x-1, 0, -1):
+        for j in range(8):
+            if checkDesc(j+1, i) == "UNUSED":
+                return j+1, i
     
