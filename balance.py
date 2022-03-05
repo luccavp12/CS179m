@@ -3,41 +3,7 @@ import json
 sampleJson = 0 #Pass in JSON here
 
 def balance(sampleJson):
-    l_weight = getLeftWeight(sampleJson)
-    r_weight = getRightWeight(sampleJson)
-    weight_diff = 0
-    if r_weight > l_weight:
-        right_heavy = True
-    else:
-        right_heavy = False
-    balance = max(l_weight/r_weight, r_weight/l_weight)
-    if balance > 1.1:
-        
-        # Attempt 1 at balancing function, check layer 1,
-        # if right_heavy is True:
-        #     weight_diff = r_weight-l_weight
-        #     for i in range(1,9):
-        #         for j in range(7,13):
-        #             heavy_container = sampleJson[makeIndex(i,j)]["weight"]
-        #             for y in range(1,9):
-        #                 for x in range(1,7):
-        #                     light_container = sampleJson[makeIndex(y,x)]["weight"]
-        #                     balance_level = (getRightWeight() - heavy_container + light_container) / (getLeftWeight() - light_container + heavy_container)
-        #                     if balance_level <= 1.1 and balance_level >= .9:
-        #                         #swap(makeIndex(i,j),makeIndex(y,x))
-        #                         #BREAK -- balance might need to be a while loop, after first run of swap, break so that we go back to top of loop
-        # else:
-        #     weight_diff = l_weight-r_weight
-        #     for i in range(1,9):
-        #         for j in range(1,7):
-        #             heavy_container = sampleJson[makeIndex(i,j)]["weight"]
-        #             for y in range(1,9):
-        #                 for x in range(7,13):
-        #                     light_container = sampleJson[makeIndex(y,x)]["weight"]
-        #                     balance_level = (getLeftWeight() - heavy_container + light_container) / (getRightWeight() - light_container + heavy_container)
-        #                     if balance_level <= 1.1 and balance_level >= .9:
-        #                         #swap(makeIndex(i,j),makeIndex(y,x))
-
+    x
 
 #------------------Helper-Functions-------------------------#
 def makeIndex(y, x):
