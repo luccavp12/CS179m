@@ -131,6 +131,9 @@ def getWeights(sampleJson): #This function will return 5 values, int right_weigh
         isBalanced = True  
     
     return right_weight, left_weight, maxWeight, max_Index, isBalanced, total
+
+
+#-----------------------------------------------------Move Functions---------------------------------------------------------------------#
             
 def isMoveable(y, x, sampleJson, flag):
     if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
