@@ -163,10 +163,25 @@ def isMoveable(y, x, sampleJson): # This function will move a container if a con
     return True
 
 def findNearestUnused(y,x,sampleJson):
-    if x = 1:
-        dest_y, dest_x = findFirstRightCol(y,x,sampleJson)
+    if x < 7:
+        if x == 1:
+            return findFirstRightCol(y, x, sampleJson)
+        else:
+            dest_y, dest_x = findFirstLeftCol(y, x, sampleJson)
+            if dest_y == -1 and dest_x == -1:
+                return findFirstRightCol(y, x, sampleJson)
+            else:
+                return dest_y, dest_x
     else:
-        return findFirstLeftCol(y,x,sampleJson)
+        if x == 12:
+            return findFirstLeftCol(y, x, sampleJson)
+        else:
+            dest_y, dest_x = findFirstRightCol(y, x, sampleJson)
+            if dest_y == -1 and dest_x == -1:
+                return findFirstLeftCol(y, x, sampleJson)
+            else:
+                return dest_y, dest_x
+
 
 
 def findFirstRightCol(y, x, sampleJson):
@@ -175,6 +190,7 @@ def findFirstRightCol(y, x, sampleJson):
         for j in range(8):
             if checkDesc(j+1, i) == "UNUSED":
                 return j+1, i
+    return -1, -1
         
 def findFirstLeftCol(y, x, sampleJson):
     for i in range(x-1, 0, -1):
