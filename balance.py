@@ -135,23 +135,36 @@ def getWeights(sampleJson): #This function will return 5 values, int right_weigh
 
 #-----------------------------------------------------Move Functions---------------------------------------------------------------------#
             
-def isMoveable(y, x, sampleJson, flag):
-    if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
-        return False
-    return True
+def move(start_y, start_x, dest_y, dest_x, sampleJson):
+    
+    if isMoveable(start_y, start_x, sampleJson):
+        start_index = makeIndex(start_y, start_x)
+        goal_index = makeIndex(dest_y, dest_x)
+        start_Weight = sampleJson[start_index]["weight"]
+        start_Desc = checkDesc(start_y, start_x)
+        distance = abs(start_y-dest_y) + abs(start_x-dest_x)
+        
+        sampleJson[start_index]["weight"] = sampleJson[goal_index]["weight"]
+        sampleJson[start_index]["description"] = sampleJson[goal_index]["description"]
+        
+        sampleJson[goal_index]["weight"] = start_Weight
+        sampleJson[goal_index]["description"] = start_Desc
+    
 
-# def isMoveable(y, x, sampleJson, flag): # This function will move a container if a container is moveable
+# def isMoveable(y, x, sampleJson, flag):
 #     if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
-#         isMoveable(y+1, x, sampleJson)
-#         flag = 1
-#     if flag == 1: #IF FLAG = 1, then we are moving an object within the same side to a free space
-#        y_desired, x_desired = findNearestUnused(y,x, sampleJson)
-#        move (y, x, y_desired, x_desired, sampleJson, flag)
-#     if flag == 0:
+#         return False
+#     return True
+
+def isMoveable(y, x, sampleJson): # This function will move a container if a container is moveable
+    if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
+        dest_y, dest_x = findNearestUnused(y+1, x, sampleJson)
+        move(y+1, x, dest_y, dest_x, sampleJson)
+    return True
 
 def findNearestUnused(y,x,sampleJson):
     if x = 1:
-        return findFirstRightCol(y,x,sampleJson)
+        dest_y, dest_x = findFirstRightCol(y,x,sampleJson)
     else:
         return findFirstLeftCol(y,x,sampleJson)
 
@@ -168,4 +181,5 @@ def findFirstLeftCol(y, x, sampleJson):
         for j in range(8):
             if checkDesc(j+1, i) == "UNUSED":
                 return j+1, i
+    return -1, -1
     
