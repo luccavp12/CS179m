@@ -132,8 +132,10 @@ def sift(sampleJson):
                 move_blocking_container_to_y = 0
                 move_blocking_container_to_x = 0
                 if flag_x == 0:
+                    print("Gets here 1")
                     move_blocking_container_to_y, move_blocking_container_to_x = findFirstLeftCol(row, column, sampleJson)
                 else: # if flag == 1
+                    print("Gets here 2")
                     move_blocking_container_to_y, move_blocking_container_to_x = findFirstRightCol(row, column, sampleJson)
                 move(row, column, move_blocking_container_to_y, move_blocking_container_to_x, sampleJson, 0)
                 move(sorted_array[i][2], sorted_array[i][3], row, column, sampleJson, 0)
@@ -174,19 +176,19 @@ def checkDesc(y, x, sampleJson): #This function will take the y and x as well as
     return sampleJson[index]["description"]
 
 def ifLeftEmpty(sampleJson): # This function needs to be workshopped into finding the nearest empty space TO FIX
-    for i in range(8):
-        for j in range(6,0,-1):
-            index = makeIndex(i+1,j)
-            if checkDesc(i+1,j,sampleJson) == "UNUSED":
-                return i+1, j
+    for i in range(6,0,1):
+        for j in range(1,9):
+            index = makeIndex(j,i)
+            if checkDesc(j,i,sampleJson) == "UNUSED":
+                return j,i
     return -1, -1
 
 def ifRightEmpty(sampleJson): # This function needs to be workshopped into finding the nearest empty space TO FIX
-    for i in range(8):
-        for j in range(7,13):
-            index = makeIndex(i+1,j)
-            if checkDesc(i+1,j,sampleJson) == "UNUSED":
-                return i+1, j
+    for i in range(7,13):
+        for j in range(1,9):
+            index = makeIndex(j,i)
+            if checkDesc(j,i,sampleJson) == "UNUSED":
+                return j, i
     return -1, -1
 
 def getLeftWeight(sampleJson): #This function will return as a int the entire weight of the left hand side.
@@ -310,14 +312,15 @@ def findFirstLeftCol(y, x, sampleJson):                         # Returns y and 
     
 
 #-----------------------------------------------------MAIN CODE---------------------------------------------------------------------------#
-with open('./sampleJson.json', 'r') as f:
+with open('./shipCase5json.json', 'r') as f:
     sampleJson = json.load(f)
-
+print("THIS IS THE SAMPLE JSON AT THE BEGINNING OF ANY ITERATIONS")
+print(sampleJson)
 #Pass Json here
 balance(sampleJson)
 
 print(moves, tot_distance)
 
 print(move_Dict)
-
+print("THIS IS THE SAMPLE JSON AT THE END OF ALL ITERATIONS")
 print(sampleJson)
