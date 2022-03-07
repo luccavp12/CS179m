@@ -1,4 +1,5 @@
 import json
+from random import sample
 
 moves = 0
 move_Dict = {}
@@ -108,7 +109,52 @@ def balance(sampleJson):
 
 def sift(sampleJson):
     # TODO: IMPLEMENT SIFTING
+    moves = 0
+    move_Dict = {}
+    tot_distance = 0
+    sorted_array = []
+    for i in range(8):
+        for j in range(12):
+            index = makeIndex(i+1,j+1)
+            if sampleJson[index]["weight"] != "00000":
+                entry = (int(sampleJson[index]["weight"]), sampleJson[index]["description"], i+1, j+1)
+                sorted_array.append(entry)
+    sorted_array.sort(key = lambda x: x[0], reverse=True)
+    print("THis is the sorted array\n" + str(sorted_array))
+    flag_x = 0
+    flag_y = 0
+    rebound = 1
+    column = 6
+    row = 1
+    for i in range(len(sorted_array)):
+        if checkDesc(row, column, sampleJson) != "UNUSED" and checkDesc(row, column, sampleJson) != "NAN":
+            if checkDesc(row, column) != sorted_array[1]:
+                move_blocking_container_to_y = 0
+                move_blocking_container_to_x = 0
+                if flag_x == 0:
+                    move_blocking_container_to_y, move_blocking_container_to_x = findFirstLeftCol(row, column, sampleJson)
+                else: # if flag == 1
+                    move_blocking_container_to_y, move_blocking_container_to_x = findFirstRightCol(row, column, sampleJson)
+                move(row, column, move_blocking_container_to_y, move_blocking_container_to_x, sampleJson, 0)
+                move(sorted_array[i][2], sorted_array[i][3], row, column, sampleJson, 0)
+        elif (checkDesc(row, column, sampleJson) == "UNUSED"):
+                move(sorted_array[i][2], sorted_array[i][3], row, column, sampleJson, 0)
+        else:
+            i -= 1
+        
 
+        if flag_x == 0:
+            flag_x = 1
+            column += rebound
+        else: 
+            flag_x = 0
+            column -= rebound
+        if i % 2 == 1:
+            row += 1
+        if row > 8:
+            column -= 2
+            row = 1
+            rebound += 2
 #----------------------------------------------------------Helper-Functions-----------------------------------------------------------------#
 def makeIndex(y, x):
     if y > 9:   # If the index if greater than 9, then we format as a double digit instead of appending a 0 to the end
@@ -274,4 +320,4 @@ print(moves, tot_distance)
 
 print(move_Dict)
 
-# print(sampleJson)
+print(sampleJson)
