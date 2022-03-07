@@ -3,9 +3,18 @@ import json
 moves = 0
 move_Dict = {}
 tot_distance = 0
+all_best_balances = []
 
 def balance(sampleJson):
+    
     right_weight, left_weight, maxWeight, max_Index, isBalanced, total = getWeights(sampleJson)
+
+    # Code to check if things are balanceable
+    rest_of_weight = right_weight + left_weight - maxWeight
+    if maxWeight * .9 > rest_of_weight:
+        print("Unbalanceable! IMPLEMENT SPECIAL CASE HERE")
+        return
+
     print(left_weight, right_weight)
     if left_weight == 0:
         balance_ratio = 1/right_weight
@@ -21,6 +30,13 @@ def balance(sampleJson):
         print("The ship is already balanced!")
         
     while(balance_ratio > 1.1 or balance_ratio < .9):
+        all_best_balances.append(best_balance)
+        if len(all_best_balances) >= 2:
+            if all_best_balances[-2] == all_best_balances[-1]:
+                print("UNBALANCEABLE SHIP. EXECUTING SIFT")
+                sift(sampleJson)
+                return
+                
         if balance_ratio > 1.1: #Left side is heavier we need to move something from here to right side
             
             for i in range(8,0,-1):
@@ -81,7 +97,7 @@ def balance(sampleJson):
             dest_y, dest_x = ifLeftEmpty(sampleJson)
             if dest_y != -1 and dest_x != -1:
                 print("Right to Left:", best_y, best_x, dest_y, dest_x)
-                move(best_y, best_x, dest_y, dest_x, sampleJson)
+                move(best_y, todobest_x, dest_y, dest_x, sampleJson)
             
         #After making some sort of change by either doing the right and left movement, we need to recalculate balance_ratio.
         left_weight = getLeftWeight(sampleJson)
@@ -89,7 +105,9 @@ def balance(sampleJson):
         balance_ratio = left_weight/right_weight
         print(left_weight, right_weight, balance_ratio)
 #----------------------------------------------------------balance() ends here--------------------------------------------------------------#
-    
+
+def sift(sampleJson):
+    # TODO: IMPLEMENT SIFTING
 
 #----------------------------------------------------------Helper-Functions-----------------------------------------------------------------#
 def makeIndex(y, x):
@@ -246,7 +264,7 @@ def findFirstLeftCol(y, x, sampleJson):                         # Returns y and 
     
 
 #-----------------------------------------------------MAIN CODE---------------------------------------------------------------------------#
-with open('./shipCase4json.json', 'r') as f:
+with open('./sampleJson.json', 'r') as f:
     sampleJson = json.load(f)
 
 #Pass Json here
@@ -256,4 +274,4 @@ print(moves, tot_distance)
 
 print(move_Dict)
 
-print(sampleJson)
+# print(sampleJson)
