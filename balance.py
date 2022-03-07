@@ -137,9 +137,9 @@ def getWeights(sampleJson): #This function will return 5 values, int right_weigh
             
 def move(start_y, start_x, dest_y, dest_x, sampleJson, flag=0):
     
-    clearPath(start_y, start_x, sampleJson)
+    clearPath(start_y, start_x, sampleJson) #This function will ensure we only move a container once all containers above it are gone
     
-    if flag == 1:
+    if flag == 1: # This is for when we move containers to the nearest unused spot, since it can change while in clearPath, we must reassess what is the nearestUnused spot
         dest_y, dest_x = findNearestUnused(start_y, start_x, sampleJson)
         move(start_y, start_x, dest_y, dest_x, sampleJson)
         return
@@ -148,8 +148,10 @@ def move(start_y, start_x, dest_y, dest_x, sampleJson, flag=0):
     goal_index = makeIndex(dest_y, dest_x)
     start_Weight = sampleJson[start_index]["weight"]
     start_Desc = checkDesc(start_y, start_x)
+    
     distance = abs(start_y-dest_y) + abs(start_x-dest_x)
     
+    #We only move to UNUSED containers, so by swapping it simulates the movement perfectly
     sampleJson[start_index]["weight"] = sampleJson[goal_index]["weight"]
     sampleJson[start_index]["description"] = sampleJson[goal_index]["description"]
     
@@ -157,7 +159,7 @@ def move(start_y, start_x, dest_y, dest_x, sampleJson, flag=0):
     sampleJson[goal_index]["description"] = start_Desc
     
 
-def clearPath(y, x, sampleJson): # This function will move a container if a container is moveable
+def clearPath(y, x, sampleJson):                                # Will move containers above our start container if nessessary-
     if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
         dest_y, dest_x = findNearestUnused(y+1, x, sampleJson)
         move(y+1, x, dest_y, dest_x, sampleJson, 1)
