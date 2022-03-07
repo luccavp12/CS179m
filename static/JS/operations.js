@@ -215,7 +215,7 @@ function finishAndSubmit(ev) {
         response.json().then(function(data) {
           console.log(data);
           console.log("Hello there!");
-          checkIfLoad(data);
+          displayChanges(data);
         });
       })
       .catch(function(error) {
@@ -223,10 +223,172 @@ function finishAndSubmit(ev) {
     });    
 }
 
-function checkIfLoad(data) {
-    console.log("Inside checkIfLoad");
-    console.log(data);
-    for (var element in data) {
-        console.log(data[element]["name"]);
+var currentStep = 1;
+
+function displayChanges(data) {
+    console.log("Inside displayChanges");
+
+    // First we have to clear the table and make it all unselected
+    for (var i = 0; i < containerButtonArr.length; i++) {
+        containerButtonArr[i].children[0].style.backgroundColor = "white";
+        // console.log(containerButtonArr[i].children[0].id);
     }
+
+    // Need to make the loading and unloading div disapear
+    modeButtonContainer = document.getElementById("modeButtonContainer");
+    modeButtonContainer.style.display = "none";
+
+    // Need to remove the submit button and create the Next button
+    const finishButton = document.getElementById("finishButton");
+    finishButton.style.display = "none";
+    const nextButton = document.getElementById("nextButton");
+    nextButton.style.display = "flex";
+    
+    // GO THROUGH every item in the returned json and show the steps of balancing!
+    var currentStep = 1;
+    nextButton.addEventListener("click", nextOperation);
+    nextButton.data = data;
+
+    // TODO: HOW TO HANDLE THE NEW JSON AS THERE ARE DIFFERENT CONDITIONS (ORIGIN/DESTINATION BEING GONE)
+    // Now based on what the condition is, we will go to seperate functions
+    if (data[1]["condition"] == "0") {
+        highlightCurrentOperation(data[1]["origin"], data[1]["destination"]);
+    }
+    else if (data[1]["condition"] == "1") {
+        highlightCurrentLoad(data[1]["destination"]);
+    }
+    else if (data[1]["condition"] == "2") {
+        highlightCurrentUnload(data[1]["destination"]);
+    }
+
+    console.log(data);
+    // for (var element in data) {
+    //     console.log(data[element]["origin"]);
+    //     console.log(data[element]["destination"]);
+    // }
+}
+
+function nextOperation(evt) {
+    currentStep = currentStep + 1;
+
+    // Get the data object
+    data = evt.currentTarget.data;
+    
+    // Everytime we click "next", we need to clear the previous operation
+    var prevOrigin = data[currentStep - 1]["origin"];
+    var prevDestination = data[currentStep - 1]["destination"];
+
+    // If the last move was just a swap
+    if (data[currentStep - 1]["condition"] == "0") {
+        // Get the previous origin and destination container
+        const prevOriginContainer = document.getElementById(prevOrigin);
+        const prevDestinationContainer = document.getElementById(prevDestination);
+    
+        // Grab the weight and description so that we can swap them after the move is done
+        prevOriginContainerWeight = prevOriginContainer.children[1].textContent;
+        prevOriginContainerDescription = prevOriginContainer.children[2].textContent;
+        
+        prevDestinationContainerWeight = prevDestinationContainer.children[1].textContent;
+        prevDestinationContainerDescription = prevDestinationContainer.children[2].textContent;
+    
+        // Swap the weights and descriptions 
+        prevDestinationContainer.children[1].textContent = prevOriginContainerWeight;
+        prevDestinationContainer.children[2].textContent = prevOriginContainerDescription;
+    
+        prevOriginContainer.children[1].textContent = prevDestinationContainerWeight;
+        prevOriginContainer.children[2].textContent = prevDestinationContainerDescription;
+    
+        // Finalize the previous operation by turning it back to white
+        prevOriginContainer.style.backgroundColor = "white";
+        prevDestinationContainer.style.backgroundColor = "white";
+    }
+    // If the last move was a load
+    else if (data[currentStep - 1]["condition"] == "1") {
+        const prevDestinationContainer = document.getElementById(prevDestination);
+        prevDestinationContainer.style.backgroundColor = "white";
+    }
+    // If the last move was an unload
+    else if (data[currentStep - 1]["condition"] == "2") {
+        const prevDestinationContainer = document.getElementById(prevDestination);
+        prevDestinationContainer.style.backgroundColor = "white";
+
+        prevDestinationContainer.children[1].textContent = "{00000}";
+        prevDestinationContainer.children[2].textContent = "UNUSED";
+    }
+    // You can combine the previous two conditionals for cleanliness
+    
+
+    // Get the next operation and pass it into the highlight function
+    // In a try block because it will eventually reach the end of the data object
+    try {
+        var condition = data[currentStep]["condition"];
+        var destination = data[currentStep]["destination"];
+        
+        if (condition == "0") {
+            var origin = data[currentStep]["origin"];
+            highlightCurrentOperation(origin, destination);
+        }
+        else if (condition == "1") {
+            highlightCurrentLoad(destination);
+        }
+        else if (condition == "2") {
+            highlightCurrentUnload(destination);
+        }    
+    } catch (error) {
+        // We reached the end and can now procede in our direction
+        console.log("Reached end of the data object");
+        
+        // TODO IMPLEMENT THE NEXT STEP IN THE PROCESS
+    }
+}
+
+// TODO: Here we should hide/show a graphic at the top that says what to do with the green and red containers
+function highlightCurrentOperation(origin, destination) {
+    const originContainer = document.getElementById(origin);
+    const destinationContainer = document.getElementById(destination);
+
+    originContainer.style.backgroundColor = "green";
+    destinationContainer.style.backgroundColor = "red";
+}
+
+// TODO: Here we should hide/show a graphic at the top that says to load into the green container
+function highlightCurrentLoad(destination) {
+    // Bring up the information collection modal
+    informationModal = document.getElementById("informationInputContainer");
+    informationModal.style.display = "flex";
+
+    // Add a listener to the submit button to check when they are satisfied
+    inputSubmitButton = document.getElementById("inputSubmitButton");
+    inputSubmitButton.addEventListener("click", collectInputInformation);
+
+    const destinationContainer = document.getElementById(destination);
+    destinationContainer.style.backgroundColor = "green";
+
+    function collectInputInformation() {
+        // TODO: Add a check if the information is empty/legal
+
+        informationModal.style.display = "none";
+        
+        nameInput = document.getElementById("nameInput");
+        weightInput = document.getElementById("weightInput");
+        descriptionInput = document.getElementById("descriptionInput");
+
+        nameVal = nameInput.value;
+        weightVal = weightInput.value;
+        descriptionVal = descriptionInput.value;
+
+        nameInput.value = "";
+        weightInput.value = "";
+        descriptionInput.value = "";
+
+        destinationContainer.children[1].textContent = "{" + (parseInt(weightVal)).toLocaleString('en-US', {minimumIntegerDigits: 5, useGrouping:false}) + "}";
+        destinationContainer.children[2].textContent = nameVal;
+    }
+}
+
+// TODO: Here we should hide/show a graphic at the top that says to unload the green container
+function highlightCurrentUnload(destination) {
+    const destinationContainer = document.getElementById(destination);
+
+    destinationContainer.style.backgroundColor = "green";
 }

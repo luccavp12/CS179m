@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/home.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <title>CS179M Project</title>
 <h1>CS179M Project Home Page</h1>
@@ -10,20 +10,20 @@
 
 <body>
     <div class="container">
-        <a href="{{ url_for('operations') }}">
+        <!-- <a href="{{ url_for('operations') }}">
             <div id="uploadManifestButton">
                 <p>Upload Manifest</p>
             </div>
-        </a>
+        </a> -->
     
         <div id="optionsContainer">
-            <a href="">
+            <a href="{{ url_for('balance') }}">
                 <div id="balanceShipButton">
                     <p class="buttonText">Balance Ship</p>
                 </div>
             </a>
 
-            <a href="">
+            <a href="{{ url_for('operations') }}">
                 <div id="loadUnloadShipButton">
                     <p class="buttonText">Load/Unload Ship</p>
                 </div>
