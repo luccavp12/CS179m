@@ -162,36 +162,35 @@ def clearPath(y, x, sampleJson): # This function will move a container if a cont
         dest_y, dest_x = findNearestUnused(y+1, x, sampleJson)
         move(y+1, x, dest_y, dest_x, sampleJson, 1)
 
-def findNearestUnused(y,x,sampleJson):
-    if x < 7:
-        if x == 1:
+def findNearestUnused(y,x,sampleJson):                          # Finds nearest column to move blocking containers to
+    if x < 7:                                                   # If container is on the left half, we ideally want to move it left
+        if x == 1:                                              # Leftmost column can't move more left
             return findFirstRightCol(y, x, sampleJson)
-        else:
-            dest_y, dest_x = findFirstLeftCol(y, x, sampleJson)
+        else:       
+            dest_y, dest_x = findFirstLeftCol(y, x, sampleJson) # If no space on left, then search to the right
             if dest_y == -1 and dest_x == -1:
                 return findFirstRightCol(y, x, sampleJson)
             else:
                 return dest_y, dest_x
-    else:
-        if x == 12:
-            return findFirstLeftCol(y, x, sampleJson)
-        else:
+    else:                                                       # Containers on right half want to go more right
+        if x == 12:                                             # Rightmost container can't move more right
+            return findFirstLeftCol(y, x, sampleJson)           
+        else:                                                   # If no space on right, then search to the left
             dest_y, dest_x = findFirstRightCol(y, x, sampleJson)
             if dest_y == -1 and dest_x == -1:
                 return findFirstLeftCol(y, x, sampleJson)
             else:
                 return dest_y, dest_x
             
-def findFirstRightCol(y, x, sampleJson):
-    # should return a y and x element
-    for i in range(x+1, 7):
+def findFirstRightCol(y, x, sampleJson):                        # Returns y and x coordinate if there is a space available
+    for i in range(x+1, 7):                                     # in the columns to the right, else, return (-1, -1) to go left
         for j in range(8):
             if checkDesc(j+1, i) == "UNUSED":
                 return j+1, i
         return -1, -1
-        
-def findFirstLeftCol(y, x, sampleJson):
-    for i in range(x-1, 0, -1):
+
+def findFirstLeftCol(y, x, sampleJson):                         # Returns y and x coordinate if there is a space available 
+    for i in range(x-1, 0, -1):                                 # in the columns to the left, else, return (-1, -1) to go right 
         for j in range(8):
             if checkDesc(j+1, i) == "UNUSED":
                 return j+1, i
