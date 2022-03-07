@@ -1,13 +1,13 @@
 <!doctype html>
 <head>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/operations.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/balance.css') }}">
     <!-- <script src="{{ url_for('static', filename='JS/operations.js') }}"></script> -->
     <script src="https://unpkg.com/whatwg-fetch@2.0.4/fetch.js"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <script type="text/javascript"> var urlForAlgo = "{{ url_for('operationsAlgorithm') }}"; </script>
+    <script type="text/javascript"> var urlForAlgo = "{{ url_for('balanceAlgorithm') }}"; </script>
 </head>
 <title>CS179M Project</title>
-<h1>Operations</h1>
+<h1>Balance</h1>
 
 <pre>
 <a href="{{ url_for('home') }}">home</a>
@@ -15,29 +15,12 @@
 
 <body>
 
-    <div id="headerContainer">
-        <div id="modeButtonContainer">
-            <div id="loadingButton">
-                <p>Loading</p>
-            </div>
-            <div id="unloadingButton">
-                <p>Unloading</p>
-            </div>
-        </div>
-    </div>
-
     <div id="gridContainer">
 
         <div id="informationInputContainer">
             <div id="informationInput">
-                <p class="inputTextTitle">Input Container Data</p>
-                <p class="inputText">Name</p>
-                <input class="inputField" id="nameInput" type="text">
-                <p class="inputText">Weight</p>
-                <input class="inputField" id="weightInput" type="text">
-                <p class="inputText">Description</p>
-                <input class="inputField" id="descriptionInput" type="text">
-                <input type="button" value="Submit" id="inputSubmitButton">
+                <p class="inputTextTitle">Ready to Balance?</p>
+                <input type="button" value="Yes" id="inputSubmitButton">
             </div>
         </div>
 
@@ -139,24 +122,10 @@
     </div>
 
     <div id="footerContainer">
-        <div id="finishButtonContainer">
-            <form id="finishSubmissionForm">
-                <!-- <div id="finishButton">
-                    <p>Finish</p>
-                </div> -->
-                <input type="submit" value="Finish" id="finishButton">
-            </form>
-            <input type="button" value="Next" id="nextButton">
-        </div>
-        <!-- <div id="nextButtonContainer">
-        </div> -->
-    </div>
-
-    <!-- <div id="footerContainer">
         <div id="nextButtonContainer">
             <input type="button" value="Next" id="nextButton">
         </div>
-    </div> -->
+    </div>
 </body>
 
-<script src="{{ url_for('static', filename='JS/operations.js') }}"></script>
+<script src="{{ url_for('static', filename='JS/balance.js') }}"></script>
