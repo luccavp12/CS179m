@@ -1,20 +1,12 @@
 import json
 
-with open('./sampleJson.json', 'r') as f:
-    sampleJson = json.load(f)
-
-print(sampleJson) #Pass Json here
 moves = 0
 move_Dict = {}
 tot_distance = 0
-balance(sampleJson)
-
-print(moves, tot_distance)
-
-print(move_Dict)
 
 def balance(sampleJson):
     right_weight, left_weight, maxWeight, max_Index, isBalanced, total = getWeights(sampleJson)
+    print(left_weight, right_weight)
     if left_weight == 0:
         balance_ratio = 1/right_weight
     elif right_weight == 0:
@@ -34,9 +26,14 @@ def balance(sampleJson):
             for i in range(8,0,-1):
                 for j in range(6,0,-1):
                     left_cont = makeIndex(i,j) #left_cont is just the index so we can access the weight values
-                    new_left = left_weight - sampleJson[left_cont]["weight"]
-                    new_right = right_weight + sampleJson[left_cont]["weight"]
-                    curr_balance = new_left/new_right
+                    new_left = left_weight - int(sampleJson[left_cont]["weight"])
+                    new_right = right_weight + int(sampleJson[left_cont]["weight"])
+                    if new_left == 0:
+                        curr_balance = 1/new_right
+                    elif new_right == 0:
+                        curr_balance = new_left/1
+                    else:
+                        curr_balance = new_left/new_right
                     if curr_balance < 1.1 and curr_balance > 0.9:
                         #MOVE left_cont to nearest rightside spot CODE MUST BREAK HERE SINCE WE BALANCED THE SHIP
                         dest_y, dest_x = ifRightEmpty(sampleJson)
@@ -52,6 +49,7 @@ def balance(sampleJson):
             #MOVE best_index to the nearest rightside spot, and continue the while loop.
             dest_y, dest_x = ifRightEmpty(sampleJson)
             if dest_y != -1 and dest_x != -1:
+                print("Left to Right:", best_y, best_x, dest_y, dest_x)
                 move(best_y, best_x, dest_y, dest_x, sampleJson)
             
         if balance_ratio < .9: #Right side is heavier we need to move something from here to left side.
@@ -59,9 +57,14 @@ def balance(sampleJson):
             for i in range(8,0,-1):
                 for j in range(7,13):
                     right_cont = makeIndex(i,j)
-                    new_right = right_weight - sampleJson[right_cont]["weight"]
-                    new_left = left_weight + sampleJson[right_cont]["weight"]
-                    curr_balance = new_left/new_right
+                    new_right = right_weight - int(sampleJson[right_cont]["weight"])
+                    new_left = left_weight + int(sampleJson[right_cont]["weight"])
+                    if new_left == 0:
+                        curr_balance = 1/new_right
+                    elif new_right == 0:
+                        curr_balance = new_left/1
+                    else:
+                        curr_balance = new_left/new_right
                     if curr_balance < 1.1 and curr_balance > 0.9:
                         #Move right_cont to nearest leftside spot CODE MUST BREAK HERE SINCE WE BALANACED THE SHIP
                         dest_y, dest_x = ifLeftEmpty(sampleJson)
@@ -71,18 +74,20 @@ def balance(sampleJson):
                     else:
                         if abs(curr_balance-1) < abs(best_balance-1):
                             best_balance = curr_balance
-                            best_index = right_cont
+                            best_y, best_x = i,j
                             
             #If we made it here in our code that means that no move balanced the ship, so we will make the best move we can currently make.
             #Move best_index to the nearest leftside spot, and continue the while loop.
             dest_y, dest_x = ifLeftEmpty(sampleJson)
             if dest_y != -1 and dest_x != -1:
+                print("Right to Left:", best_y, best_x, dest_y, dest_x)
                 move(best_y, best_x, dest_y, dest_x, sampleJson)
             
         #After making some sort of change by either doing the right and left movement, we need to recalculate balance_ratio.
         left_weight = getLeftWeight(sampleJson)
         right_weight = getRightWeight(sampleJson)
         balance_ratio = left_weight/right_weight
+        print(left_weight, right_weight, balance_ratio)
 #----------------------------------------------------------balance() ends here--------------------------------------------------------------#
     
 
@@ -179,13 +184,17 @@ def move(start_y, start_x, dest_y, dest_x, sampleJson, flag=0):
     start_index = makeIndex(start_y, start_x)
     goal_index = makeIndex(dest_y, dest_x)
     start_Weight = sampleJson[start_index]["weight"]
-    start_Desc = checkDesc(start_y, start_x)
+    start_Desc = checkDesc(start_y, start_x, sampleJson)
     
     distance = abs(start_y-dest_y) + abs(start_x-dest_x)
+    global tot_distance
     tot_distance += distance
+    global moves
     moves += 1
-    move_Dict[str(move)]["origin"] = start_index
-    move_Dict[str(move)]["destination"] = goal_index
+    global move_Dict
+    move_Dict[str(moves)] = {}
+    move_Dict[str(moves)]["origin"] = start_index
+    move_Dict[str(moves)]["destination"] = goal_index
     
     #We only move to UNUSED containers, so by swapping it simulates the movement perfectly
     sampleJson[start_index]["weight"] = sampleJson[goal_index]["weight"]
@@ -224,14 +233,27 @@ def findNearestUnused(y,x,sampleJson):                          # Finds nearest 
 def findFirstRightCol(y, x, sampleJson):                        # Returns y and x coordinate if there is a space available
     for i in range(x+1, 7):                                     # in the columns to the right, else, return (-1, -1) to go left
         for j in range(8):
-            if checkDesc(j+1, i) == "UNUSED":
+            if checkDesc(j+1, i, sampleJson) == "UNUSED":
                 return j+1, i
         return -1, -1
 
 def findFirstLeftCol(y, x, sampleJson):                         # Returns y and x coordinate if there is a space available 
     for i in range(x-1, 0, -1):                                 # in the columns to the left, else, return (-1, -1) to go right 
         for j in range(8):
-            if checkDesc(j+1, i) == "UNUSED":
+            if checkDesc(j+1, i, sampleJson) == "UNUSED":
                 return j+1, i
     return -1, -1
     
+
+#-----------------------------------------------------MAIN CODE---------------------------------------------------------------------------#
+with open('./shipCase4json.json', 'r') as f:
+    sampleJson = json.load(f)
+
+#Pass Json here
+balance(sampleJson)
+
+print(moves, tot_distance)
+
+print(move_Dict)
+
+print(sampleJson)
