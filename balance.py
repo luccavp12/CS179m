@@ -4,7 +4,7 @@ sampleJson = 0 #Pass in JSON here
 
 def balance(sampleJson):
     right_weight, left_weight, maxWeight, max_Index, isBalanced, total = getWeights(sampleJson)
-    balance_ratio = left_weight/right_weight
+    balance_ratio = left_weight/right_weight # URGENT: Code will break on 0 Division
     best_balance = 100000.0 #This value will hold the ratio closest to balanced
     best_index = ""
     curr_balance = 100000.0 #This value will hold the ratio of the containers we are currently considering swapping.
@@ -160,7 +160,7 @@ def move(start_y, start_x, dest_y, dest_x, sampleJson, flag=0):
     
 
 def clearPath(y, x, sampleJson):                                # Will move containers above our start container if nessessary-
-    if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:
+    if checkDesc(y+1,x,sampleJson) != "UNUSED" and y !=8:       # URGENT: Check if y != 8 before checkDesc
         dest_y, dest_x = findNearestUnused(y+1, x, sampleJson)
         move(y+1, x, dest_y, dest_x, sampleJson, 1)
 
