@@ -1,7 +1,4 @@
 import json
-operations_dict = 0
-sampleJson = 0
-
 moves = 0
 move_Dict = {}
 tot_distance = 0        
@@ -30,6 +27,7 @@ def move(start_y, start_x, dest_y, dest_x, sampleJson, flag=0):
     move_Dict[str(moves)] = {}
     move_Dict[str(moves)]["origin"] = start_index
     move_Dict[str(moves)]["destination"] = goal_index
+    move_Dict[str(moves)]["condition"] = 0
     
     #We only move to UNUSED containers, so by swapping it simulates the movement perfectly
     sampleJson[start_index]["weight"] = sampleJson[goal_index]["weight"]
@@ -81,19 +79,110 @@ def findFirstLeftCol(y, x, sampleJson):                         # Returns y and 
                 return j+1, i
     return -1, -1
 
+def makeIndex(y, x):
+    if y > 9:   # If the index if greater than 9, then we format as a double digit instead of appending a 0 to the end
+        if x > 9: # Same situation as y
+            index = "["+ str(y) + "," + str(x) + "]"
+        else:
+            index = "["+ str(y) + ",0" + str(x) + "]"
+    else:
+        if x > 9:
+            index = "[0"+ str(y) + "," + str(x) + "]"
+        else:
+            index = "[0"+ str(y) + ",0" + str(x) + "]"
+    return index
+
+def checkDesc(y, x, sampleJson): #This function will take the y and x as well as the Json we are operating on and check the description of the package
+    index = makeIndex(y,x) 
+    return sampleJson[index]["description"]
+
+def ifLeftEmpty(sampleJson): # This function needs to be workshopped into finding the nearest empty space TO FIX
+    for i in range(8):
+        for j in range(6,0,-1):
+            index = makeIndex(i+1,j)
+            if checkDesc(i+1,j,sampleJson) == "UNUSED":
+                return i+1, j
+    return -1, -1
+
+def ifRightEmpty(sampleJson): # This function needs to be workshopped into finding the nearest empty space TO FIX
+    for i in range(8):
+        for j in range(7,13):
+            index = makeIndex(i+1,j)
+            if checkDesc(i+1,j,sampleJson) == "UNUSED":
+                return i+1, j
+    return -1, -1
+
+def getLeftWeight(sampleJson): #This function will return as a int the entire weight of the left hand side.
+    total = 0
+    for i in range(8): #Height
+        for j in range(6):
+            index = makeIndex(i+1,j+1)
+            total += int(sampleJson[index]["weight"])
+    return total
+
+def getRightWeight(sampleJson): #This function will return as a int the entire weight of the right hand side.
+    total = 0
+    for i in range(8): #Height
+        for j in range(6):
+            index = makeIndex(i+1,j+7)
+            total += int(sampleJson[index]["weight"])
+            
+    return total
+
+def getWeights(sampleJson): #This function will return 5 values, int right_weight, int left_weight, int maxWeight, string max_Index, int total, and string heavy.
+    total = 0
+    maxWeight = 0
+    max_Index = ""
+    isBalanced = False
+    right_weight = getRightWeight(sampleJson)
+    left_weight = getLeftWeight(sampleJson)
+    
+    for i in range(8):
+        for j in range(12):
+            index = makeIndex(i+1,j+1)
+            currWeight = int(sampleJson[index]["weight"])
+            total += currWeight
+            if currWeight > maxWeight:
+                maxWeight = currWeight
+                max_Index = index
+                
+    
+    if left_weight == 0 and right_weight == 0:
+        isBalanced = True
+    elif left_weight == 0 or right_weight == 0:
+        isBalanced = False
+    elif left_weight/right_weight < 1.1 and left_weight/right_weight > .9:
+        isBalanced = True
+    
+    return right_weight, left_weight, maxWeight, max_Index, isBalanced, total
+
 
 #-----------------------------------------------------------------------MAIN CODE--------------------------------------------------------------------------------#
+with open('./loadUnloadTest3.json', 'r') as f:
+    operations_dict = json.load(f)
 
-
-for i in operations_dict:
+#operations_dict has on layer 1: manifest, or changes. Manifest = sampleJson and operations_dict is changes
+for i in operations_dict["changes"]:
     index = i
-    y, x = index[1:3], index[4:6]
-    if operations_dict[i]["loadUnload"] == 0: #Unload 
-        move(y,x,8,1,sampleJson)
-        sampleJson[i]["weight"] = "00000"
-        sampleJson[i]["description"] = "UNUSED"
+    final_loc = makeIndex(8,1)
+    y, x = int(index[1:3]), int(index[4:6])
+    if operations_dict["changes"][i]["loadUnload"] == 2: #Unload 
+        move(y,x,8,1,operations_dict["manifest"])
+        move_Dict[str(moves)]["condition"] = 2
+        move_Dict[str(moves)]["destination"] = i
+        move_Dict[str(moves)]["origin"] = "NAN"
+        operations_dict["manifest"][final_loc]["weight"] = "00000"
+        operations_dict["manifest"][final_loc]["description"] = "UNUSED"
         tot_distance += 3
     else: #Load
         tot_distance += abs(8-y) + abs(1-x) + 3
-        sampleJson[i]["weight"] = "00000"
-        sampleJson[i]["description"] = "NEWCONTAINER"
+        operations_dict["manifest"][i]["weight"] = "00000"
+        operations_dict["manifest"][i]["description"] = "NEWCONTAINER"
+        moves += 1
+        move_Dict[str(moves)] = {}
+        move_Dict[str(moves)]["origin"] = "NAN"
+        move_Dict[str(moves)]["destination"] = i
+        move_Dict[str(moves)]["condition"] = 1
+        
+print(operations_dict["manifest"])
+print(move_Dict)
