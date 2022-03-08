@@ -122,10 +122,51 @@ function nextBalanceOperation(evt) {
     
         highlightCurrentOperation(origin, destination);
     } catch (error) {
-        // We reached the end and can now procede in our direction
+        // We reached the end and can now proceed in our direction
         console.log("Reached end of the data object");
 
         // TODO IMPLEMENT THE NEXT STEP IN THE PROCESS
+
+        // Create a new object that will contain the final manifest information on the screen
+        newManifest = new Object();
+        for (let i = 0; i < containerButtonArr.length; i++) {
+            var containerPosition = containerButtonArr[i].children[0].id;
+            var containerWeight = containerButtonArr[i].children[0].children[1].textContent;
+            var containerDescription = containerButtonArr[i].children[0].children[2].textContent;
+    
+            var obj = new Object();
+            // obj.position = containerPosition;
+            obj.weight = containerWeight.slice(1, -1);
+            obj.description = containerDescription;
+    
+            newManifest[containerPosition] = obj;        
+        }
+
+        console.log("newManifest:");
+        console.log(newManifest);
+        console.log(urlForExportManifest);
+        newManifestJson = JSON.stringify(newManifest);
+
+        // Send this new manifest data to the python side to trigger a download and redirect to home page
+        fetch(urlForExportManifest, {
+            method: 'POST',
+            credentials: "include",
+            body: newManifestJson,
+            cache: "no-cache",
+            redirect: "follow",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        })
+        .then(response => {
+            // Grab redirect link and follow through with it
+            if(response.redirected){
+                window.location.href = response.url;
+            }
+        })
+        .catch(function(err) {
+            console.info(err + " url: " + url);
+        });
     }
 }
 

@@ -1,5 +1,6 @@
 from crypt import methods
 from curses import nonl
+from tkinter import filedialog
 from unicodedata import name
 from flask import Flask
 from flask import render_template
@@ -13,7 +14,7 @@ from datetime import date
 import re
 import json
 from random import sample
-#import easygui
+import easygui
 
 app = Flask(__name__)
 
@@ -45,9 +46,9 @@ def home():
 
 @app.route("/operations")
 def operations():
-    #manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    #print(manifestPath)
-    manifestPath = "Manifests/ShipCase4.txt"                     
+    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    print(manifestPath)
+    # manifestPath = "Manifests/ShipCase4.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -66,9 +67,9 @@ def operations():
 
 @app.route("/balance")
 def balance():
-    #manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    #print(manifestPath)
-    manifestPath = "Manifests/ShipCase4.txt"                     
+    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    print(manifestPath)
+    # manifestPath = "Manifests/ShipCase4.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -84,24 +85,6 @@ def balance():
                     d[columns[index]] = data[index]
             infoList.append(d)
     return render_template('balance.html', text = infoList)
-
-# algrithm() is the proper format of how a function should handle accepting the json and returning it 
-# CURRENTLY UNUSED
-# @app.route("/algorithm", methods=["POST"])
-# def algorithm():
-#     # This is where we can implement the python coding for algorithm
-#     req = request.get_json()
-#     print("Printing JSON of changes to be made")
-#     print(req)
-
-#     res = make_response(jsonify({
-#             "1": {"weight": 110, "name": "toys"},
-#             "2": {"weight": 90, "name": "medicine"},
-#             "3": {"weight": 300, "name": "car parts"}
-#         }), 200)
-#     # res = make_response(jsonify({"bruh":"hello"}   ), 200)
-
-#     return res
 
 # Where the manifest json is sent in correct format, needing to be balanced
 @app.route("/balanceAlgorithm", methods=["POST"])
@@ -431,35 +414,10 @@ def balanceAlgorithm():
         
 
     #-----------------------------------------------------MAIN CODE---------------------------------------------------------------------------#
-    # with open('./shipCase5json.json', 'r') as f:
-    #     sampleJson = json.load(f)
-    # print("THIS IS THE SAMPLE JSON AT THE BEGINNING OF ANY ITERATIONS")
-    # print(sampleJson)
     #Pass Json here
     sampleJson = req
 
     balance(sampleJson)
-
-    # print(moves, tot_distance)
-
-    # print(move_Dict)
-    # print(sampleJson)
-
-    # RETURN JSON OF CORRECT MOVES HERE
-    # res = make_response(jsonify({
-    #         "1": {
-    #             "origin": "[05,03]", 
-    #             "destination": "[02,02]"
-    #         },
-    #         "2": {
-    #             "origin": "[01,08]", 
-    #             "destination": "[01,09]"
-    #         },
-    #         "3": {
-    #             "origin": "[02,01]", 
-    #             "destination": "[02,06]"
-    #         }
-    #     }), 200)
 
     res = make_response(jsonify(move_Dict), 200)
 
@@ -667,19 +625,26 @@ def operationsAlgorithm():
     res = make_response(jsonify(move_Dict), 200)
 
     return res
-    # RETURN JSON OF CORRECT MOVES HERE
-    # res = make_response(jsonify({
-    #         "1": {
-    #             "condition": "0",
-    #             "origin": "[01,01]", 
-    #             "destination": "[01,02]"
-    #         },
-    #         "2": {
-    #             "condition": "1",
-    #             "destination": "[01,06]"
-    #         },
-    #         "3": {
-    #             "condition": "2",
-    #             "destination": "[03,06]"
-    #         }
-    #     }), 200)
+
+@app.route("/exportManifest", methods=['POST'])
+def exportManifest():
+    # print(request)
+    req = request.get_json()
+    print("Printing JSON of new Manifest")
+    print(req)
+
+    manifestDirPath = easygui.diropenbox(msg="Select where you would like to download the new manifest")                                            # Prompts the user with the file explorer to choose a manifest
+
+    print(manifestDirPath)
+    
+    with open(manifestDirPath + "/newManifest", "a") as f:
+        for key, file_dir in sorted(list(req.items()), key=lambda x:x[0].lower(), reverse=False):
+            f.write(key + ", {" + file_dir["weight"] + "}, " + file_dir["description"] + "\n")
+        f.close()
+
+    print("redirecting")
+    return redirect(url_for('home'))
+    # # res = make_response(jsonify(req), 200)
+
+    # return res
+
