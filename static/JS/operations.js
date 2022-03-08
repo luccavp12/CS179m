@@ -238,6 +238,7 @@ var currentStep = 1;
 
 function displayChanges(data) {
     console.log("Inside displayChanges");
+    console.log(data);
 
     // First we have to clear the table and make it all unselected
     for (var i = 0; i < containerButtonArr.length; i++) {
@@ -281,16 +282,21 @@ function displayChanges(data) {
 
 function nextOperation(evt) {
     currentStep = currentStep + 1;
+    prevStep = currentStep - 1;
+    console.log(currentStep);
+    console.log(prevStep);
+
 
     // Get the data object
     data = evt.currentTarget.data;
     
     // Everytime we click "next", we need to clear the previous operation
-    var prevOrigin = data[currentStep - 1]["origin"];
-    var prevDestination = data[currentStep - 1]["destination"];
+    var prevOrigin = data[prevStep]["origin"];
+    var prevDestination = data[prevStep]["destination"];
 
     // If the last move was just a swap
-    if (data[currentStep - 1]["condition"] == "0") {
+    if (data[prevStep]["condition"] == "0") {
+        console.log("Previous condition was 0");
         // Get the previous origin and destination container
         const prevOriginContainer = document.getElementById(prevOrigin);
         const prevDestinationContainer = document.getElementById(prevDestination);
@@ -314,12 +320,12 @@ function nextOperation(evt) {
         prevDestinationContainer.style.backgroundColor = "white";
     }
     // If the last move was a load
-    else if (data[currentStep - 1]["condition"] == "1") {
+    else if (data[prevStep]["condition"] == "1") {
         const prevDestinationContainer = document.getElementById(prevDestination);
         prevDestinationContainer.style.backgroundColor = "white";
     }
     // If the last move was an unload
-    else if (data[currentStep - 1]["condition"] == "2") {
+    else if (data[prevStep]["condition"] == "2") {
         const prevDestinationContainer = document.getElementById(prevDestination);
         prevDestinationContainer.style.backgroundColor = "white";
 
@@ -334,6 +340,8 @@ function nextOperation(evt) {
     try {
         var condition = data[currentStep]["condition"];
         var destination = data[currentStep]["destination"];
+        console.log("destination");
+        console.log(destination);
         
         if (condition == "0") {
             var origin = data[currentStep]["origin"];
@@ -365,37 +373,59 @@ function highlightCurrentOperation(origin, destination) {
 }
 
 // TODO: Here we should hide/show a graphic at the top that says to load into the green container
-function highlightCurrentLoad(destination) {
+function highlightCurrentLoad(destination) {   
+    console.log("destination value inside highlightCurrentLoad");
+    console.log(destination);
+    
     // Bring up the information collection modal
     informationModal = document.getElementById("informationInputContainer");
     informationModal.style.display = "flex";
 
     // Add a listener to the submit button to check when they are satisfied
-    inputSubmitButton = document.getElementById("inputSubmitButton");
-    inputSubmitButton.addEventListener("click", collectInputInformation);
+    // console.log("Checking current step");
+    // console.log(currentStep);
+    if (currentStep == 1) {
+        inputSubmitButton = document.getElementById("inputSubmitButton");
+        inputSubmitButton.addEventListener("click", collectInputInformation);
+        inputSubmitButton.destination = destination;
+    }
+    else {
+        // inputSubmitButton = document.getElementById("inputSubmitButton");
+        // inputSubmitButton.removeEventListener("click", collectInputInformation);
+        // inputSubmitButton.addEventListener("click", collectInputInformation);
+        inputSubmitButton.destination = destination;
+    }
 
-    const destinationContainer = document.getElementById(destination);
-    destinationContainer.style.backgroundColor = "green";
+    // const destinationContainer = document.getElementById(destination);
+    // destinationContainer.style.backgroundColor = "green";
 
-    function collectInputInformation() {
+    function collectInputInformation(evt) {
         // TODO: Add a check if the information is empty/legal
+        destination = evt.currentTarget.destination;
 
-        informationModal.style.display = "none";
-        
+        destinationContainer = document.getElementById(destination);
+        destinationContainer.style.backgroundColor = "green";
+
         nameInput = document.getElementById("nameInput");
         weightInput = document.getElementById("weightInput");
         descriptionInput = document.getElementById("descriptionInput");
-
+        
         nameVal = nameInput.value;
+        console.log("nameVal");
+        console.log(nameVal);
         weightVal = weightInput.value;
         descriptionVal = descriptionInput.value;
-
+        
+        console.log("destination value inside collectInputInformation");
+        console.log(destination);
+        
+        destinationContainer.children[1].textContent = "{" + (parseInt(weightVal)).toLocaleString('en-US', {minimumIntegerDigits: 5, useGrouping:false}) + "}";
+        destinationContainer.children[2].textContent = nameVal;
+        
+        informationModal.style.display = "none";
         nameInput.value = "";
         weightInput.value = "";
         descriptionInput.value = "";
-
-        destinationContainer.children[1].textContent = "{" + (parseInt(weightVal)).toLocaleString('en-US', {minimumIntegerDigits: 5, useGrouping:false}) + "}";
-        destinationContainer.children[2].textContent = nameVal;
     }
 }
 
