@@ -6,19 +6,12 @@
 <h1 class = "center">Keogh's Yard Portage</h1>
 <h2 class = "center">Login Page</h2>
 
-<form action="{{ url_for('storeCreds') }}" method="POST">
-  
+<form action="{{ url_for('storeCreds') }}" method="POST"> 
     <div class="center">
-
         <form method="POST">
-            Username:<br>
-            <input type="text" name="tag"><br>
-            <input type="submit" value="Submit">
+            <br> Username:<br>
+            <input id="loginUsernameInput" type="text" name="tag"><br>
+            <input id="loginSubmitButton" type="submit" value="Log in">
         </form>
-        
     </div>
-
-
-  
-    </div>
-  </form> 
+</form> 
