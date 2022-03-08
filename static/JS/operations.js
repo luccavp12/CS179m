@@ -166,28 +166,39 @@ function finishAndSubmit(ev) {
         console.log("No changes were made to the manifest!");
     }
 
+    changeList["changes"] = new Object();
+    changeList["manifest"] = new Object();
+
     for (let i = 0; i < positionList.length; i++) {
         for (let j = 0; j < containerButtonArr.length; j++) {
             // Trying to retrieve all the information about the container being changed
             // if the current container to be changed is found in the full list of containers (with container details)
-            if (positionList[i] == containerButtonArr[j].children[0].id) {
-                var containerPosition = containerButtonArr[j].children[0].id;
-                var containerWeight = containerButtonArr[j].children[0].children[1].textContent;
-                var containerDescription = containerButtonArr[j].children[0].children[2].textContent;
+            var containerPosition = containerButtonArr[j].children[0].id;
+            var containerWeight = containerButtonArr[j].children[0].children[1].textContent;
+            var containerDescription = containerButtonArr[j].children[0].children[2].textContent;
 
+            // We check if the container is the one that we need to add to 
+            if (positionList[i] == containerButtonArr[j].children[0].id) {
                 var obj = new Object();
                 // obj.position = containerPosition;
                 obj.weight = containerWeight.slice(1, -1);
                 obj.description = containerDescription;
                 obj.loadUnload = loadUnloadBool[i];
 
-                changeList[containerPosition] = obj;
+                changeList["changes"][containerPosition] = obj;
                 
                 console.log(obj);
             }
+            var objMan = new Object();
+            // obj.position = containerPosition;
+            objMan.weight = containerWeight.slice(1, -1);
+            objMan.description = containerDescription;
+
+            changeList["manifest"][containerPosition] = objMan
         }
     }
 
+    console.log("Change List with manifest and changes:");
     console.log(changeList);
     var changeListJson = JSON.stringify(changeList);
     console.log(changeListJson);
@@ -339,6 +350,8 @@ function nextOperation(evt) {
         console.log("Reached end of the data object");
         
         // TODO IMPLEMENT THE NEXT STEP IN THE PROCESS
+        // 
+
     }
 }
 

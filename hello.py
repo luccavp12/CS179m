@@ -66,7 +66,7 @@ def operations():
 def balance():
     #manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
     #print(manifestPath)
-    manifestPath = "Manifests/ShipCase4.txt"                     
+    manifestPath = "Manifests/ShipCase5.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -134,7 +134,7 @@ def balanceAlgorithm():
 def operationsAlgorithm():
     # This is where we can implement the python coding for algorithm
     req = request.get_json()
-    print("Printing JSON of changes to be made")
+    print("Printing JSON of changes to be made in operationsAlgo")
     print(req)
 
     # ADD BALANCING FUNCTION HERE
