@@ -12,9 +12,10 @@ def balance(sampleJson):
 
     # Code to check if things are balanceable
     rest_of_weight = right_weight + left_weight - maxWeight
-    if maxWeight * .9 > rest_of_weight:
-        print("Unbalanceable! IMPLEMENT SPECIAL CASE HERE")
-        return
+    # if maxWeight * .9 > rest_of_weight:
+    #     print("Unbalanceable! IMPLEMENT SPECIAL CASE HERE")
+    #     sift(sampleJson)
+    #     return
 
     print(left_weight, right_weight)
     if left_weight == 0:
@@ -107,56 +108,63 @@ def balance(sampleJson):
         print(left_weight, right_weight, balance_ratio)
 #----------------------------------------------------------balance() ends here--------------------------------------------------------------#
 
-def sift(sampleJson):
-    # TODO: IMPLEMENT SIFTING
-    moves = 0
-    move_Dict = {}
-    tot_distance = 0
-    sorted_array = []
-    for i in range(8):
-        for j in range(12):
+def sift(sampleJson):                                                   # Sift is only done when the ship is not balanceable
+    # moves = 0                                   
+    # move_Dict = {}
+    # tot_distance = 0
+    sorted_array = []                                                   # To figure out which containers are heaviest to lightest
+    for i in range(8):                                                  # Grabs all containers with weight to sort
+        for j in range(12): 
             index = makeIndex(i+1,j+1)
             if sampleJson[index]["weight"] != "00000":
                 entry = (int(sampleJson[index]["weight"]), sampleJson[index]["description"], i+1, j+1)
                 sorted_array.append(entry)
     sorted_array.sort(key = lambda x: x[0], reverse=True)
-    print("THis is the sorted array\n" + str(sorted_array))
+
+    # Flag_x tells us if we need to place to the left or to the right, with help of column and rebound to go from 6 to 7, then to 5, then 8, etc, with a "rebounding" motion
+    # When a column is completely filled, go up a row, and reset rebound to 0
     flag_x = 0
-    flag_y = 0
-    rebound = 1
     column = 6
     row = 1
-    for i in range(len(sorted_array)):
-        if checkDesc(row, column, sampleJson) != "UNUSED" and checkDesc(row, column, sampleJson) != "NAN":
-            if checkDesc(row, column) != sorted_array[1]:
-                move_blocking_container_to_y = 0
+    rebound = 0
+
+    for i in range(len(sorted_array)):                              # For all containers with weight in the manifest
+        if checkDesc(row, column, sampleJson) != "UNUSED" and checkDesc(row, column, sampleJson) != "NAN": # CANNOT MOVE CONTAINER TO NAN 
+            if checkDesc(row, column, sampleJson) != sorted_array[i][1]: # Don't move a container if it's already where it should be
+                move_blocking_container_to_y = 0                         # This case handles moving to the optimal spot if there is another container in the way
                 move_blocking_container_to_x = 0
                 if flag_x == 0:
-                    print("Gets here 1")
                     move_blocking_container_to_y, move_blocking_container_to_x = findFirstLeftCol(row, column, sampleJson)
                 else: # if flag == 1
-                    print("Gets here 2")
                     move_blocking_container_to_y, move_blocking_container_to_x = findFirstRightCol(row, column, sampleJson)
                 move(row, column, move_blocking_container_to_y, move_blocking_container_to_x, sampleJson, 0)
                 move(sorted_array[i][2], sorted_array[i][3], row, column, sampleJson, 0)
-        elif (checkDesc(row, column, sampleJson) == "UNUSED"):
+        elif (checkDesc(row, column, sampleJson) == "UNUSED"):          # If there is no container at optimal spot, no moveout needed
                 move(sorted_array[i][2], sorted_array[i][3], row, column, sampleJson, 0)
         else:
             i -= 1
-        
 
-        if flag_x == 0:
+        sorted_array = []                                               # Resort array to update positions with potential changes
+        for it in range(8):
+            for j in range(12):
+                index = makeIndex(it+1,j+1)
+                if sampleJson[index]["weight"] != "00000":
+                    entry = (int(sampleJson[index]["weight"]), sampleJson[index]["description"], it+1, j+1)
+                    sorted_array.append(entry)
+        sorted_array.sort(key = lambda x: (x[0], x[1]), reverse=True)
+
+        if flag_x == 0:                                                 # First move to the right
             flag_x = 1
-            column += rebound
-        else: 
-            flag_x = 0
-            column -= rebound
-        if i % 2 == 1:
+            column = column + rebound + 1
+        else:
+            flag_x = 0                                                  # Then move back to the left, one more position away from last container
+            column = column - rebound - 1
+        if column == 0 or column == 12:                                 # Reset rebound if column is filled, and go up a row
+            column = 6
             row += 1
-        if row > 8:
-            column -= 2
-            row = 1
-            rebound += 2
+            rebound = 0
+        rebound = rebound + 1
+            
 #----------------------------------------------------------Helper-Functions-----------------------------------------------------------------#
 def makeIndex(y, x):
     if y > 9:   # If the index if greater than 9, then we format as a double digit instead of appending a 0 to the end
@@ -314,13 +322,12 @@ def findFirstLeftCol(y, x, sampleJson):                         # Returns y and 
 #-----------------------------------------------------MAIN CODE---------------------------------------------------------------------------#
 with open('./shipCase5json.json', 'r') as f:
     sampleJson = json.load(f)
-print("THIS IS THE SAMPLE JSON AT THE BEGINNING OF ANY ITERATIONS")
-print(sampleJson)
+# print("THIS IS THE SAMPLE JSON AT THE BEGINNING OF ANY ITERATIONS")
+# print(sampleJson)
 #Pass Json here
 balance(sampleJson)
 
 print(moves, tot_distance)
 
 print(move_Dict)
-print("THIS IS THE SAMPLE JSON AT THE END OF ALL ITERATIONS")
 print(sampleJson)
