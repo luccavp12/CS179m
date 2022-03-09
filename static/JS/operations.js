@@ -234,6 +234,22 @@ function displayChanges(data) {
     console.log("Inside displayChanges");
     console.log(data);
 
+    timeRemaining = data["time"];
+    console.log("timeRemaining");
+    console.log(timeRemaining);
+
+    var currentDate = new Date();
+    currentDate.setMinutes(currentDate.getMinutes() + timeRemaining);
+
+    hoursRemaining = currentDate.getHours();
+    hoursRemaining = (hoursRemaining).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+
+    minutesRemaining = currentDate.getMinutes();
+
+    const timeDisplay = document.getElementById("timeDisplay");
+    timeDisplay.textContent = "Estimated Time at Finish:\n" + hoursRemaining + ":" + minutesRemaining;
+    
+
     // First we have to clear the table and make it all unselected
     for (var i = 0; i < containerButtonArr.length; i++) {
         containerButtonArr[i].children[0].style.backgroundColor = "white";

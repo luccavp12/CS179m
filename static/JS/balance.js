@@ -61,6 +61,21 @@ var currentStep = 1;
 
 function displayBalancing(data) {
     console.log("Inside displayBalancing");
+
+    timeRemaining = data["time"];
+    console.log("timeRemaining");
+    console.log(timeRemaining);
+
+    var currentDate = new Date();
+    currentDate.setMinutes(currentDate.getMinutes() + timeRemaining);
+
+    hoursRemaining = currentDate.getHours();
+    hoursRemaining = (hoursRemaining).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+
+    minutesRemaining = currentDate.getMinutes();
+
+    const timeDisplay = document.getElementById("timeDisplay");
+    timeDisplay.textContent = "Estimated Time at Finish:\n" + hoursRemaining + ":" + minutesRemaining;
     
     // We need to disable the submit div so we can see the containers
     const beginBalanceButton = document.getElementById("informationInputContainer");

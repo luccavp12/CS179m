@@ -46,9 +46,9 @@ def home():
 
 @app.route("/operations")
 def operations():
-    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    print(manifestPath)
-    # manifestPath = "Manifests/ShipCase4.txt"                     
+    # manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    # print(manifestPath)
+    manifestPath = "Manifests/ShipCase4.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -67,9 +67,9 @@ def operations():
 
 @app.route("/balance")
 def balance():
-    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    print(manifestPath)
-    # manifestPath = "Manifests/ShipCase4.txt"                     
+    # manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    # print(manifestPath)
+    manifestPath = "Manifests/ShipCase4.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -91,8 +91,8 @@ def balance():
 def balanceAlgorithm():
     # This is where we can implement the python coding for algorithm
     req = request.get_json()
-    print("Printing JSON of changes to be made")
-    print(req)
+    # print("Printing JSON of changes to be made")
+    # print(req)
 
     # ADD BALANCING FUNCTION HERE
     moves = 0
@@ -111,7 +111,7 @@ def balanceAlgorithm():
         #     sift(sampleJson)
         #     return
 
-        print(left_weight, right_weight)
+        # print(left_weight, right_weight)
         if left_weight == 0:
             balance_ratio = 1/right_weight
         elif right_weight == 0:
@@ -129,7 +129,7 @@ def balanceAlgorithm():
             all_best_balances.append(best_balance)
             if len(all_best_balances) >= 2:
                 if all_best_balances[-2] == all_best_balances[-1]:
-                    print("UNBALANCEABLE SHIP. EXECUTING SIFT")
+                    # print("UNBALANCEABLE SHIP. EXECUTING SIFT")
                     sift(sampleJson)
                     return
                     
@@ -161,7 +161,7 @@ def balanceAlgorithm():
                 #MOVE best_index to the nearest rightside spot, and continue the while loop.
                 dest_y, dest_x = ifRightEmpty(sampleJson)
                 if dest_y != -1 and dest_x != -1:
-                    print("Left to Right:", best_y, best_x, dest_y, dest_x)
+                    # print("Left to Right:", best_y, best_x, dest_y, dest_x)
                     move(best_y, best_x, dest_y, dest_x, sampleJson)
                 
             if balance_ratio < .9: #Right side is heavier we need to move something from here to left side.
@@ -192,14 +192,14 @@ def balanceAlgorithm():
                 #Move best_index to the nearest leftside spot, and continue the while loop.
                 dest_y, dest_x = ifLeftEmpty(sampleJson)
                 if dest_y != -1 and dest_x != -1:
-                    print("Right to Left:", best_y, best_x, dest_y, dest_x)
+                    # print("Right to Left:", best_y, best_x, dest_y, dest_x)
                     move(best_y, best_x, dest_y, dest_x, sampleJson)
                 
             #After making some sort of change by either doing the right and left movement, we need to recalculate balance_ratio.
             left_weight = getLeftWeight(sampleJson)
             right_weight = getRightWeight(sampleJson)
             balance_ratio = left_weight/right_weight
-            print(left_weight, right_weight, balance_ratio)
+            # print(left_weight, right_weight, balance_ratio)
     #----------------------------------------------------------balance() ends here--------------------------------------------------------------#
 
     def sift(sampleJson):                                                   # Sift is only done when the ship is not balanceable
@@ -419,6 +419,11 @@ def balanceAlgorithm():
 
     balance(sampleJson)
 
+    print("moveDict")
+    print(move_Dict)
+
+    move_Dict["time"] = tot_distance
+
     res = make_response(jsonify(move_Dict), 200)
 
     return res
@@ -428,8 +433,8 @@ def balanceAlgorithm():
 def operationsAlgorithm():
     # This is where we can implement the python coding for algorithm
     req = request.get_json()
-    print("Printing JSON of changes to be made in operationsAlgo")
-    print(req)
+    # print("Printing JSON of changes to be made in operationsAlgo")
+    # print(req)
 
     # ADD load/unload FUNCTION HERE
 
@@ -501,7 +506,7 @@ def operationsAlgorithm():
         for i in range(x+1, 7):                                     # in the columns to the right, else, return (-1, -1) to go left
             for j in range(8):
                 if checkDesc(j+1, i, sampleJson) == "UNUSED":
-                    print(j+1, i)
+                    # print(j+1, i)
                     return j+1, i
             return -1, -1
 
@@ -509,7 +514,7 @@ def operationsAlgorithm():
         for i in range(x-1, 0, -1):                                 # in the columns to the left, else, return (-1, -1) to go right 
             for j in range(8):
                 if checkDesc(j+1, i, sampleJson) == "UNUSED":
-                    print(j+1, i)
+                    # print(j+1, i)
                     return j+1, i
         return -1, -1
 
@@ -619,8 +624,10 @@ def operationsAlgorithm():
             move_Dict[str(moves)]["destination"] = i
             move_Dict[str(moves)]["condition"] = 1
             
-    print(operations_dict["manifest"])
-    print(move_Dict)
+    # print(operations_dict["manifest"])
+    # print(move_Dict)
+
+    move_Dict["time"] = tot_distance
 
     res = make_response(jsonify(move_Dict), 200)
 
@@ -630,19 +637,19 @@ def operationsAlgorithm():
 def exportManifest():
     # print(request)
     req = request.get_json()
-    print("Printing JSON of new Manifest")
-    print(req)
+    # print("Printing JSON of new Manifest")
+    # print(req)
 
-    manifestDirPath = easygui.diropenbox(msg="Select where you would like to download the new manifest")                                            # Prompts the user with the file explorer to choose a manifest
+    # manifestDirPath = easygui.diropenbox(msg="Select where you would like to download the new manifest")                                            # Prompts the user with the file explorer to choose a manifest
 
-    print(manifestDirPath)
+    # # print(manifestDirPath)
     
-    with open(manifestDirPath + "/newManifest", "a") as f:
-        for key, file_dir in sorted(list(req.items()), key=lambda x:x[0].lower(), reverse=False):
-            f.write(key + ", {" + file_dir["weight"] + "}, " + file_dir["description"] + "\n")
-        f.close()
+    # with open(manifestDirPath + "/newManifest", "a") as f:
+    #     for key, file_dir in sorted(list(req.items()), key=lambda x:x[0].lower(), reverse=False):
+    #         f.write(key + ", {" + file_dir["weight"] + "}, " + file_dir["description"] + "\n")
+    #     f.close()
 
-    print("redirecting")
+    # print("redirecting")
     return redirect(url_for('home'))
     # # res = make_response(jsonify(req), 200)
 

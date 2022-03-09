@@ -141,23 +141,18 @@
 
     <div id="footerContainer">
         <div id="finishButtonContainer">
+            <div id="timeContainer">
+                <div id="timeDisplay">
+                    Estimated Time at Finish
+                </div>
+            </div>
             <form id="finishSubmissionForm">
-                <!-- <div id="finishButton">
-                    <p>Finish</p>
-                </div> -->
                 <input type="submit" value="Finish" id="finishButton">
             </form>
             <input type="button" value="Next" id="nextButton">
         </div>
-        <!-- <div id="nextButtonContainer">
-        </div> -->
     </div>
-
-    <!-- <div id="footerContainer">
-        <div id="nextButtonContainer">
-            <input type="button" value="Next" id="nextButton">
-        </div>
-    </div> -->
+    
 </body>
 
 <script src="{{ url_for('static', filename='JS/operations.js') }}"></script>

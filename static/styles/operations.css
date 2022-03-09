@@ -117,7 +117,7 @@ body {
 
 #finishButtonContainer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 1420px;
 }
 
@@ -133,7 +133,7 @@ body {
 
 #nextButtonContainer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 1420px;
 }
 
@@ -146,6 +146,20 @@ body {
     width: 300px;
     font-size: 30px;
     margin-left: 10px;
+}
+
+#timeContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+    background-color: white;
+}
+
+#timeDisplay {
+    width: 400px;
+    padding: 20px;
 }
 
 .positionDisplay {
