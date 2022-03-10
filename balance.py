@@ -18,7 +18,9 @@ def balance(sampleJson):
     #     return
 
     print(left_weight, right_weight)
-    if left_weight == 0:
+    if left_weight == 0 and right_weight == 0:
+        balance_ratio = 1/1
+    elif left_weight == 0:
         balance_ratio = 1/right_weight
     elif right_weight == 0:
         balance_ratio = left_weight/1
