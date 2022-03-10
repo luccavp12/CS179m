@@ -1,3 +1,4 @@
+from cmath import log
 from crypt import methods
 from curses import nonl
 from tkinter import filedialog
@@ -67,9 +68,9 @@ def operations():
 
 @app.route("/balance")
 def balance():
-    # manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    # print(manifestPath)
-    manifestPath = "Manifests/ShipCase4.txt"                     
+    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    print(manifestPath)
+    # manifestPath = "Manifests/ShipCase5.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -654,4 +655,57 @@ def exportManifest():
     # # res = make_response(jsonify(req), 200)
 
     # return res
+
+@app.route("/commentLog", methods=['POST'])
+def commentLog():
+    req = request.get_json()
+    print(req)
+    
+    today = date.today()
+    today_formated = today.strftime("%b-%d-%Y")
+    time = datetime.now()
+    currTime = time.strftime("%H:%M:%S")
+    
+    with open("CommentLog/comments.txt", "a") as f:
+        f.write("[" + today_formated + "] " + currTime + "\n" + req + "\n\n")
+        f.close()
+
+    return "whats good"
+
+@app.route("/stepSaveOperations", methods=['POST'])
+def stepSaveOperations():
+    req = request.get_json()
+    print(req)
+    
+    today = date.today()
+    today_formated = today.strftime("%b-%d-%Y")
+    time = datetime.now()
+    currTime = time.strftime("%H:%M:%S")
+    
+    with open("CurrentSave/currentSave.txt", "a") as f:
+        if req["condition"] == 0:
+            f.write("[" + today_formated + "] " + currTime + "\n" + "Container was moved from " + req["origin"] + " to " + req["destination"] + "\n\n")
+        elif req["condition"] == 1:
+            f.write("[" + today_formated + "] " + currTime + "\n" + "Container was loaded into " + req["destination"] + "\n\n")
+        elif req["condition"] == 2:
+            f.write("[" + today_formated + "] " + currTime + "\n" + "Container was unloaded from " + req["destination"] + "\n\n")
+        f.close()
+
+    return "whats good"
+
+@app.route("/stepSaveBalance", methods=['POST'])
+def stepSaveBalance():
+    req = request.get_json()
+    print(req)
+    
+    today = date.today()
+    today_formated = today.strftime("%b-%d-%Y")
+    time = datetime.now()
+    currTime = time.strftime("%H:%M:%S")
+    
+    with open("CurrentSave/currentSave.txt", "a") as f:        
+        f.write("[" + today_formated + "] " + currTime + "\n" + "Container was moved from " + req["origin"] + " to " + req["destination"] + "\n\n")
+        f.close()
+
+    return "whats good"
 

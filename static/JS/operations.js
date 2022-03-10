@@ -60,6 +60,12 @@ const containerButtonArr = document.getElementsByClassName("containerButtonConta
 for (var i = 0; i < containerButtonArr.length; i++) {
     containerButtonArr[i].addEventListener('click', containerSelection);
     // console.log(containerButtonArr[i].children[0].id);
+    if (containerButtonArr[i].children[0].children[2].textContent == "NAN") {
+        containerButtonArr[i].children[0].style.backgroundColor = "rgb(105, 105, 105)";
+    }
+    else if(containerButtonArr[i].children[0].children[2].textContent !== "UNUSED") {
+        containerButtonArr[i].children[0].style.backgroundColor = "lightgreen";
+    }
 }
 
 // Event listener function for container button click
@@ -83,9 +89,9 @@ function containerSelection() {
             // Take the container information and send it to the Changes.json
 
             // Check if the button has been clicked or not
-            // If it hasn't been clicked, change it to blue (selected)
+            // If it hasn't been clicked, change it to lightblue (selected)
             // If it has been clicked, change it back to white (unselected)
-            if (this.children[0].style.backgroundColor == "blue") {
+            if (this.children[0].style.backgroundColor == "lightblue") {
                 this.children[0].style.backgroundColor = "white";
 
                 // Gets the index of the LOADED container in the position list array
@@ -99,7 +105,7 @@ function containerSelection() {
                 console.log(loadUnloadBool);
             }
             else {
-                this.children[0].style.backgroundColor = "blue";
+                this.children[0].style.backgroundColor = "lightblue";
 
                 // Appending the position to the list of containers to be changed
                 positionList.push(containerPosition);
@@ -122,7 +128,7 @@ function containerSelection() {
             // If it hasn't been clicked, change it to pink (selected)
             // If it has been clicked, change it back to white (unselected)
             if (this.children[0].style.backgroundColor == "pink") {
-                this.children[0].style.backgroundColor = "white";
+                this.children[0].style.backgroundColor = "lightgreen";
 
                 // Gets the index of the UNLOADED container in the position list array
                 removeIndex = positionList.indexOf(containerPosition);
@@ -164,10 +170,16 @@ function finishAndSubmit(ev) {
 
     if (positionList.length == 0) {
         console.log("No changes were made to the manifest!");
+        alert("No changes were made to the manifest!");
+        return
     }
 
     changeList["changes"] = new Object();
     changeList["manifest"] = new Object();
+
+    // Lists that will contain the object of each operation
+    loadChanges = [];
+    unloadChanges = [];
 
     for (let i = 0; i < positionList.length; i++) {
         for (let j = 0; j < containerButtonArr.length; j++) {
@@ -185,7 +197,18 @@ function finishAndSubmit(ev) {
                 obj.description = containerDescription;
                 obj.loadUnload = loadUnloadBool[i];
 
-                changeList["changes"][containerPosition] = obj;
+                // We cannot directly add them into the Changes Object because that would ignore the efficient
+                // order in which you would unload -> load -> unload
+                // It would simply insert into the Change Object in the order the operator desired
+                // We add on the container position temporarily as to not lose it in the shift
+                if (loadUnloadBool[i] == 1) {
+                    obj.position = containerPosition;
+                    loadChanges.push(obj);
+                }
+                else {
+                    obj.position = containerPosition;
+                    unloadChanges.push(obj);
+                }
                 
                 console.log(obj);
             }
@@ -196,6 +219,28 @@ function finishAndSubmit(ev) {
 
             changeList["manifest"][containerPosition] = objMan
         }
+    }
+
+    // Need to reorganize 
+    // This will be the finalized list of the merged and alternated items
+    combinedListOfChanges = [];
+
+    const len = Math.max(loadChanges.length, unloadChanges.length);
+    for (let i = 0; i < len; i++) {
+        if (loadChanges[i] !== undefined) {
+            combinedListOfChanges.push(loadChanges[i]);
+        }
+        if (unloadChanges[i] !== undefined) {
+            combinedListOfChanges.push(unloadChanges[i]);
+        }
+    }
+ 
+    // Grab the position temporarily on the object, then delete it to keep consistency
+    // Then push the entire list to the changes list
+    for (let i = 0; i < combinedListOfChanges.length; i++) {
+        currPosition = combinedListOfChanges[i].position;
+        delete combinedListOfChanges[i].position;
+        changeList["changes"][currPosition] = combinedListOfChanges[i];
     }
 
     console.log("Change List with manifest and changes:");
@@ -252,13 +297,25 @@ function displayChanges(data) {
 
     // First we have to clear the table and make it all unselected
     for (var i = 0; i < containerButtonArr.length; i++) {
-        containerButtonArr[i].children[0].style.backgroundColor = "white";
-        // console.log(containerButtonArr[i].children[0].id);
+        if (containerButtonArr[i].children[0].children[2].textContent == "NAN") {
+            containerButtonArr[i].children[0].style.backgroundColor = "rgb(105, 105, 105)";
+        }
+        else if(containerButtonArr[i].children[0].children[2].textContent !== "UNUSED") {
+            containerButtonArr[i].children[0].style.backgroundColor = "lightgreen";
+        }
     }
 
     // Need to make the loading and unloading div disappear
-    modeButtonContainer = document.getElementById("modeButtonContainer");
-    modeButtonContainer.style.display = "none";
+    headerContainer = document.getElementById("headerContainer");
+    headerContainer.style.display = "none";
+
+     // Display instructions on balancing
+     const helpDisplayContainer = document.getElementById("helpDisplayContainer");
+     helpDisplayContainer.style.display = "flex";
+     const helpDisplayText = document.getElementById("helpDisplayText");
+     helpDisplayText.textContent = "Move the Blue Container to the Red Position, and then select Next";
+     const helpDisplay = document.getElementById("helpDisplay");
+     helpDisplay.style.backgroundColor = "white";
 
     // Need to remove the submit button and create the Next button
     const finishButton = document.getElementById("finishButton");
@@ -272,7 +329,7 @@ function displayChanges(data) {
     nextButton.data = data;
 
     // TODO: HOW TO HANDLE THE NEW JSON AS THERE ARE DIFFERENT CONDITIONS (ORIGIN/DESTINATION BEING GONE)
-    // Now based on what the condition is, we will go to seperate functions
+    // Now based on what the condition is, we will go to separate functions
     if (data[1]["condition"] == "0") {
         highlightCurrentOperation(data[1]["origin"], data[1]["destination"]);
     }
@@ -319,13 +376,26 @@ function nextOperation(evt) {
         prevOriginContainer.children[2].textContent = prevDestinationContainerDescription;
     
         // Finalize the previous operation by turning it back to white
-        prevOriginContainer.style.backgroundColor = "white";
-        prevDestinationContainer.style.backgroundColor = "white";
+        if (prevOriginContainer.children[2].textContent == "UNUSED") {
+            prevOriginContainer.style.backgroundColor = "white";
+        }
+        else {
+            prevOriginContainer.style.backgroundColor = "lightgreen";
+        }
+        if (prevDestinationContainer.children[2].textContent == "UNUSED") {
+            prevDestinationContainer.style.backgroundColor = "white";
+        }
+        else {
+            prevDestinationContainer.style.backgroundColor = "lightgreen";
+        }
+        // prevOriginContainer.style.backgroundColor = "white";
+        // prevDestinationContainer.style.backgroundColor = "white";
+        
     }
     // If the last move was a load
     else if (data[prevStep]["condition"] == "1") {
         const prevDestinationContainer = document.getElementById(prevDestination);
-        prevDestinationContainer.style.backgroundColor = "white";
+        prevDestinationContainer.style.backgroundColor = "lightgreen";
     }
     // If the last move was an unload
     else if (data[prevStep]["condition"] == "2") {
@@ -335,8 +405,29 @@ function nextOperation(evt) {
         prevDestinationContainer.children[1].textContent = "{00000}";
         prevDestinationContainer.children[2].textContent = "UNUSED";
     }
-    // You can combine the previous two conditionals for cleanliness
+
+    // Since the last step was successfully completed, we need to log the move as complete in case of power-shutoff
+    prevStepJson = JSON.stringify(data[prevStep]);
+
+    console.log(prevStepJson);
     
+    fetch(urlForStepSaveOperations, {
+        method: 'POST',
+        credentials: "include",
+        body: prevStepJson,
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then(response => {
+        // Grab redirect link and follow through with it
+        console.log("Step logged!");
+    })
+    .catch(function(err) {
+        // console.info(err + " url: " + url);
+        console.log("error logging last step");
+    });
 
     // Get the next operation and pass it into the highlight function
     // In a try block because it will eventually reach the end of the data object
@@ -410,14 +501,19 @@ function highlightCurrentOperation(origin, destination) {
     const originContainer = document.getElementById(origin);
     const destinationContainer = document.getElementById(destination);
 
-    originContainer.style.backgroundColor = "green";
+    originContainer.style.backgroundColor = "blue";
     destinationContainer.style.backgroundColor = "red";
+    
+    helpDisplayText.textContent = "Move the Blue Container to the Red Position, and then select Next";
 }
 
 // TODO: Here we should hide/show a graphic at the top that says to load into the green container
 function highlightCurrentLoad(destination) {   
     console.log("destination value inside highlightCurrentLoad");
     console.log(destination);
+
+    // Change instruction
+    helpDisplayText.textContent = "Input Information on Current Load, Click Submit, and then Unload Blue Container";
     
     // Bring up the information collection modal
     informationModal = document.getElementById("informationInputContainer");
@@ -445,35 +541,76 @@ function highlightCurrentLoad(destination) {
         // TODO: Add a check if the information is empty/legal
         destination = evt.currentTarget.destination;
 
-        destinationContainer = document.getElementById(destination);
-        destinationContainer.style.backgroundColor = "green";
-
         nameInput = document.getElementById("nameInput");
         weightInput = document.getElementById("weightInput");
-        descriptionInput = document.getElementById("descriptionInput");
-        
+
         nameVal = nameInput.value;
-        console.log("nameVal");
-        console.log(nameVal);
         weightVal = weightInput.value;
-        descriptionVal = descriptionInput.value;
-        
-        console.log("destination value inside collectInputInformation");
-        console.log(destination);
-        
-        destinationContainer.children[1].textContent = "{" + (parseInt(weightVal)).toLocaleString('en-US', {minimumIntegerDigits: 5, useGrouping:false}) + "}";
-        destinationContainer.children[2].textContent = nameVal;
-        
-        informationModal.style.display = "none";
-        nameInput.value = "";
-        weightInput.value = "";
-        descriptionInput.value = "";
+
+        console.log(weightVal.toString());
+
+        weightValDigits = weightVal.toString().length;
+        console.log(weightValDigits);
+
+        if (weightVal !== undefined && weightValDigits > 0 && weightValDigits < 6 && (!isNaN(weightVal)) && weightVal > 0) {
+            destinationContainer = document.getElementById(destination);
+            destinationContainer.style.backgroundColor = "blue";
+            
+            console.log("destination value inside collectInputInformation");
+            console.log(destination);
+            
+            destinationContainer.children[1].textContent = "{" + (parseInt(weightVal)).toLocaleString('en-US', {minimumIntegerDigits: 5, useGrouping:false}) + "}";
+            destinationContainer.children[2].textContent = nameVal;
+            
+            informationModal.style.display = "none";
+            nameInput.value = "";
+            weightInput.value = "";
+        }
+        else {
+            alert("Not a valid weight input");
+        }
     }
 }
 
 // TODO: Here we should hide/show a graphic at the top that says to unload the green container
 function highlightCurrentUnload(destination) {
+    // Change instruction
+    helpDisplayText.textContent = "Unload the Blue Container";
+    
     const destinationContainer = document.getElementById(destination);
 
-    destinationContainer.style.backgroundColor = "green";
+    destinationContainer.style.backgroundColor = "blue";
+}
+
+commentInputSubmission = document.getElementById("commentInputSubmission");
+commentInputSubmission.addEventListener("click", commentSubmission);
+
+function commentSubmission() {
+    commentInput = document.getElementById("commentInput");
+    commentInput = commentInput.value;
+
+    console.log(commentInput);
+
+    commentInputJson = JSON.stringify(commentInput);
+
+    console.log(commentInputJson);
+    
+    fetch(urlForCommentLog, {
+        method: 'POST',
+        credentials: "include",
+        body: commentInputJson,
+        cache: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+    .then(response => {
+        // Grab redirect link and follow through with it
+        console.log("comment pooped!");
+        commentInput = document.getElementById("commentInput");
+        commentInput.value = '';
+    })
+    .catch(function(err) {
+        // console.info(err + " url: " + url);
+    });
 }

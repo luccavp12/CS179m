@@ -6,6 +6,8 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <script type="text/javascript"> var urlForAlgo = "{{ url_for('balanceAlgorithm') }}"; </script>
     <script type="text/javascript"> var urlForExportManifest = "{{ url_for('exportManifest') }}"; </script>
+    <script type="text/javascript"> var urlForCommentLog = "{{ url_for('commentLog') }}"; </script>
+    <script type="text/javascript"> var urlForStepSave = "{{ url_for('stepSaveBalance') }}"; </script>
 </head>
 <title>CS179M Project</title>
 <h1>Balance</h1>
@@ -15,6 +17,12 @@
 </pre>
 
 <body>
+
+    <div id="helpDisplayContainer">
+        <div id="helpDisplay">
+            <p id="helpDisplayText"></p>
+        </div>
+    </div>
 
     <div id="gridContainer">
 
@@ -132,6 +140,18 @@
             <input type="button" value="Next" id="nextButton">
         </div>
     </div>
+
+    <div id="commentContainer">
+        <div id="comment">
+            <textarea id="commentInput" cols="30" rows="10" placeholder="Insert Comments"></textarea>
+            <div id="commentInputSubmissionContainer">
+                <div id="commentInputSubmission">
+                    <p id="submitCommentText">Submit Comment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </body>
 
 <script src="{{ url_for('static', filename='JS/balance.js') }}"></script>
