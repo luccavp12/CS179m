@@ -6,6 +6,8 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <script type="text/javascript"> var urlForAlgo = "{{ url_for('operationsAlgorithm') }}"; </script>
     <script type="text/javascript"> var urlForExportManifest = "{{ url_for('exportManifest') }}"; </script>
+    <script type="text/javascript"> var urlForCommentLog = "{{ url_for('commentLog') }}"; </script>
+    <script type="text/javascript"> var urlForStepSaveOperations = "{{ url_for('stepSaveOperations') }}"; </script>
 </head>
 <title>CS179M Project</title>
 <h1>Operations</h1>
@@ -27,6 +29,12 @@
         </div>
     </div>
 
+    <div id="helpDisplayContainer">
+        <div id="helpDisplay">
+            <p id="helpDisplayText"></p>
+        </div>
+    </div>    
+
     <div id="gridContainer">
 
         <div id="informationInputContainer">
@@ -36,8 +44,6 @@
                 <input class="inputField" id="nameInput" type="text">
                 <p class="inputText">Weight</p>
                 <input class="inputField" id="weightInput" type="text">
-                <p class="inputText">Description</p>
-                <input class="inputField" id="descriptionInput" type="text">
                 <input type="button" value="Submit" id="inputSubmitButton">
             </div>
         </div>
@@ -150,6 +156,17 @@
                 <input type="submit" value="Finish" id="finishButton">
             </form>
             <input type="button" value="Next" id="nextButton">
+        </div>
+    </div>
+
+    <div id="commentContainer">
+        <div id="comment">
+            <textarea id="commentInput" cols="30" rows="10" placeholder="Insert Comments"></textarea>
+            <div id="commentInputSubmissionContainer">
+                <div id="commentInputSubmission">
+                    <p id="submitCommentText">Submit Comment</p>
+                </div>
+            </div>
         </div>
     </div>
     

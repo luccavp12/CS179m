@@ -1,5 +1,6 @@
 body {
     background-color: rgb(151, 151, 151);
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
 
 /* FOR BALANCE THIS DIV WILL BE THE PROMPT FOR IF YOU ARE READY //////////////// */
@@ -39,6 +40,27 @@ body {
 
 #inputSubmitButton {
     height: 50px;
+}
+
+#helpDisplayContainer {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
+}
+
+#helpDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 600px;
+    text-align: center;
+    padding: 10px;
+}
+
+#helpDisplayText {
+    margin: 0px;
 }
 
 /* FOR BALANCE THIS DIV WILL BE THE PROMPT FOR IF YOU ARE READY//////////////// */
@@ -84,6 +106,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 50px;
 }
 
 .rowContainer {
@@ -99,6 +122,7 @@ body {
 .containerButton {
     background-color: white;
     /* float: right; */
+    text-align: center;
 }
 
 #footerContainer {
@@ -149,4 +173,47 @@ body {
 
 .descriptionDisplay {
     margin: 0px;
+}
+
+#commentContainer {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
+    margin-top: 50px;
+}
+
+#comment {
+    display: flex;
+    justify-content: center;
+    width: 1420px;
+}
+
+#commentInput {
+    width: 100%;
+    vertical-align: top;
+    padding: 5px;
+    font-size: 20px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+#commentInputSubmissionContainer {
+    height: auto;
+    width: 200px;
+    margin-left: 20px;
+}
+
+#commentInputSubmission {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100px;
+    width: 200px;
+    background-color: white;
+}
+
+#submitCommentText {
+    margin: 0px;
+    font-size: 20px;
 }
