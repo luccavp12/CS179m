@@ -1,6 +1,7 @@
 from cmath import log
 from crypt import methods
 from curses import nonl
+from glob import glob
 from tkinter import filedialog
 from unicodedata import name
 from flask import Flask
@@ -16,10 +17,13 @@ import re
 import json
 from random import sample
 import easygui
+import os
 
 app = Flask(__name__)
 
-@app.route("/")
+manifestFilePath = ''
+
+@app.route("/", methods=['GET','POST'])
 def sign_in():
     return render_template('sign_in.html')
 
@@ -41,15 +45,19 @@ def storeCreds():
 
     return redirect(url_for('home'))
 
-@app.route("/home")
+@app.route("/home", methods=['GET','POST'])
 def home():
     return render_template('home.html')
 
 @app.route("/operations")
 def operations():
-    # manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
-    # print(manifestPath)
-    manifestPath = "Manifests/ShipCase4.txt"                     
+    manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
+    print(manifestPath)
+    
+    global manifestFilePath
+    manifestFilePath = manifestPath
+    
+    # manifestPath = "Manifests/ShipCase4.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
         columns = ['position', 'weight', 'description']                             # Creates a list of column names
@@ -70,6 +78,10 @@ def operations():
 def balance():
     manifestPath = easygui.fileopenbox()                                            # Prompts the user with the file explorer to choose a manifest
     print(manifestPath)
+    
+    global manifestFilePath
+    manifestFilePath = manifestPath
+    
     # manifestPath = "Manifests/ShipCase5.txt"                     
     with open(manifestPath, mode = 'r', encoding= 'utf-8-sig') as f:                # Uses manifest path to open file
         lines = f.readlines()                                                       # List containing lines of file
@@ -643,12 +655,18 @@ def exportManifest():
 
     # manifestDirPath = easygui.diropenbox(msg="Select where you would like to download the new manifest")                                            # Prompts the user with the file explorer to choose a manifest
 
-    # # print(manifestDirPath)
+    global manifestFilePath
+    basename = os.path.basename(manifestFilePath)
     
-    # with open(manifestDirPath + "/newManifest", "a") as f:
-    #     for key, file_dir in sorted(list(req.items()), key=lambda x:x[0].lower(), reverse=False):
-    #         f.write(key + ", {" + file_dir["weight"] + "}, " + file_dir["description"] + "\n")
-    #     f.close()
+    # today = date.today()
+    # today_formated = today.strftime("%b-%d-%Y")
+    # time = datetime.now()
+    # currTime = time.strftime("%H %M")
+            
+    with open("OutboundManifests/Outbound " + basename, "a") as f:
+        for key, file_dir in sorted(list(req.items()), key=lambda x:x[0].lower(), reverse=False):
+            f.write(key + ", {" + file_dir["weight"] + "}, " + file_dir["description"] + "\n")
+        f.close()
 
     # print("redirecting")
     return redirect(url_for('home'))

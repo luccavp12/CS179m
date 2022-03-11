@@ -83,6 +83,7 @@ function displayBalancing(data) {
     hoursRemaining = (hoursRemaining).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
 
     minutesRemaining = currentDate.getMinutes();
+    minutesRemaining = (minutesRemaining).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
 
     const timeDisplay = document.getElementById("timeDisplay");
     timeDisplay.textContent = "Estimated Time at Finish:\n" + hoursRemaining + ":" + minutesRemaining;

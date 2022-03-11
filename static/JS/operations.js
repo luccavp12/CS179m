@@ -513,7 +513,7 @@ function highlightCurrentLoad(destination) {
     console.log(destination);
 
     // Change instruction
-    helpDisplayText.textContent = "Input Information on Current Load, Click Submit, and then Unload Blue Container";
+    helpDisplayText.textContent = "Input Information on Current Load, Click Submit, and then Load Blue Container";
     
     // Bring up the information collection modal
     informationModal = document.getElementById("informationInputContainer");

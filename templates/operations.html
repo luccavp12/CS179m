@@ -10,11 +10,14 @@
     <script type="text/javascript"> var urlForStepSaveOperations = "{{ url_for('stepSaveOperations') }}"; </script>
 </head>
 <title>CS179M Project</title>
-<h1>Operations</h1>
 
-<pre>
-<a href="{{ url_for('home') }}">home</a>
-</pre>
+<div id="homeContainer">
+    <form action="{{ url_for('home') }}" method="POST">
+            <input id="homeButton" type="submit" value="Home">
+    </form>
+</div>
+
+<h1>Load and Unload</h1>
 
 <body>
 

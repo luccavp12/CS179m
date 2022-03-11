@@ -4,16 +4,19 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <title>CS179M Project</title>
-<h1>CS179M Project Home Page</h1>
 
 <body>
-    <div class="container">
-        <!-- <a href="{{ url_for('operations') }}">
-            <div id="uploadManifestButton">
-                <p>Upload Manifest</p>
-            </div>
-        </a> -->
-    
+    <div id="shiftChangeContainer">
+        <form action="{{ url_for('sign_in') }}" method="POST">
+            <!-- <div id="shiftChange"> -->
+                <input id="shiftChange" type="submit" value="Logout">
+                <!-- </div> -->
+        </form>
+    </div>
+        
+    <h1>Select which operation you would like to do</h1>
+
+    <div class="container">    
         <div id="optionsContainer">
             <a href="{{ url_for('balance') }}">
                 <div id="balanceShipButton">
@@ -27,6 +30,5 @@
                 </div>
             </a>
         </div>
-    
     </div>
 </body>
