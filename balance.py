@@ -17,7 +17,7 @@ def balance(sampleJson):
     #     sift(sampleJson)
     #     return
 
-    print(left_weight, right_weight)
+    print("These are the initial weights. Left side total is: " + str(left_weight) + ". Right side total is: " + str(right_weight) + "." )
     if left_weight == 0 and right_weight == 0:
         balance_ratio = 1/1
     elif left_weight == 0:
@@ -34,6 +34,7 @@ def balance(sampleJson):
         print("The ship is already balanced!")
         
     while(balance_ratio > 1.1 or balance_ratio < .9):
+        
         all_best_balances.append(best_balance)
         if len(all_best_balances) >= 2:
             if all_best_balances[-2] == all_best_balances[-1]:
@@ -101,13 +102,14 @@ def balance(sampleJson):
             dest_y, dest_x = ifLeftEmpty(sampleJson)
             if dest_y != -1 and dest_x != -1:
                 print("Right to Left:", best_y, best_x, dest_y, dest_x)
-                move(best_y, todobest_x, dest_y, dest_x, sampleJson)
+                move(best_y, best_x, dest_y, dest_x, sampleJson)
             
         #After making some sort of change by either doing the right and left movement, we need to recalculate balance_ratio.
         left_weight = getLeftWeight(sampleJson)
         right_weight = getRightWeight(sampleJson)
         balance_ratio = left_weight/right_weight
-        print(left_weight, right_weight, balance_ratio)
+        print("This is the total weight of the left side: " + str(left_weight) + ". This is the weight of the right side: " + str(right_weight) + ". The balance ratio is: " + str(balance_ratio) + ".")
+        # print(left_weight, right_weight, balance_ratio)
 #----------------------------------------------------------balance() ends here--------------------------------------------------------------#
 
 def sift(sampleJson):                                                   # Sift is only done when the ship is not balanceable
@@ -186,7 +188,7 @@ def checkDesc(y, x, sampleJson): #This function will take the y and x as well as
     return sampleJson[index]["description"]
 
 def ifLeftEmpty(sampleJson): # This function needs to be workshopped into finding the nearest empty space TO FIX
-    for i in range(6,0,1):
+    for i in range(6,0,-1):
         for j in range(1,9):
             index = makeIndex(j,i)
             if checkDesc(j,i,sampleJson) == "UNUSED":
@@ -322,14 +324,18 @@ def findFirstLeftCol(y, x, sampleJson):                         # Returns y and 
     
 
 #-----------------------------------------------------MAIN CODE---------------------------------------------------------------------------#
-with open('./shipCase5json.json', 'r') as f:
+
+with open('./shipCase1.json', 'r') as f:
     sampleJson = json.load(f)
 # print("THIS IS THE SAMPLE JSON AT THE BEGINNING OF ANY ITERATIONS")
 # print(sampleJson)
+print("Executing balance on case 1.")
 #Pass Json here
 balance(sampleJson)
 
-print(moves, tot_distance)
-
-print(move_Dict)
+print("After balancing, it took us a total of " + str(moves) + " moves. It took a total amount of " + str(tot_distance) + " minutes to execute.")
+# print(moves, tot_distance)
+# print("The following are the start and end positions of each container on the ship:")
+# print(move_Dict)
+print("The final manifest looks like this:")
 print(sampleJson)
